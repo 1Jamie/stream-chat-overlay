@@ -75,6 +75,7 @@ function getmessages() {
                     chatArea.appendChild(newBr);
                     delAr.push(n);
                     setTimeout(deleteMsg, 10000);
+                    //now we might as well of go ahead and make a request to get this ball rolling
                     n++;
 
                 }
@@ -111,5 +112,3 @@ function deleteMsg() {
     delar.shift();
 }
 
-
-//now we might as well of go ahead and make a request to get this ball rolling

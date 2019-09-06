@@ -10,7 +10,7 @@ var chatArea = document.getElementById("chat");
 var messageid = 0;
 var chatClient = function chatClient(options) {
     this.username = options.username;
-    this.password = options.password;
+    this.password = 'oauth:fzr7ox5bh74qagnt6aitux9ehpia5w';
     this.channel = options.channel;
 
     this.server = 'irc-ws.chat.twitch.tv';
