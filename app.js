@@ -131,8 +131,8 @@ app.get('/', function(req, res) {
 
 io.sockets.on('connection', function(socket) {
     setTimeout(function(){
-        window.chatClient.open()}, 2500);
-        window.chatClient = new chatClient({
+        chatClient.open()}, 2500);
+        chatClient = new chatClient({
         channel: '#charja113',
         username: 'charja113',
     });
