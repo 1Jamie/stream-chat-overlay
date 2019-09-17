@@ -15,11 +15,13 @@
     "start": "nodemon app.js"
   },
   "dependencies": {
+    "ejs": "^2.7.1",
     "express": "^4.17.1",
     "irc": "^0.5.2",
     "jade": "*",
     "less-middleware": "*",
-    "lodash": "1.x"
+    "lodash": "1.x",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "grunt": "0.4.x",
@@ -33,11 +35,16 @@
     "nodemon": "*"
   },
   "keywords": [],
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.streamchatoverlay.xyz:Jamie/streamchatoverlay.git"
+  },
   "licenses": [
     {
       "type": "MIT",
       "url": "http://streamchatoverlay.xzy"
     }
-  ]
+  ],
+  "main": "app.js",
+  "license": "ISC"
 }
