@@ -4,6 +4,8 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 var path = require('path');
 var irc = require('irc');
+const {google} = require('googleapis');
+var WebSocketClient = require('websocket').client;
 //var ircconf = [
 //    options : {channels:['#charja113'], port: 6667, seucure: true, userName: 'charbot', realname: 'charbot'},
 //    ]
@@ -29,7 +31,7 @@ var chatClient = function chatClient(options) {
 };
 
 chatClient.prototype.open = function open() {
-    this.webSocket = new WebSocket('wss://' + this.server + ':' + this.port + '/', 'irc');
+    this.webSocket = new WebSocketClient('wss://' + this.server + ':' + this.port + '/', 'irc');
 
     this.webSocket.onmessage = this.onMessage.bind(this);
     this.webSocket.onerror = this.onError.bind(this);
