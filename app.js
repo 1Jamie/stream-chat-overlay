@@ -50,9 +50,8 @@ function onMessageHandler (channel, tags, message, self) {
     console.log('twitch', `${displayName} : ${message}`);
     //curl.get(`https://api.twitch.tv/kraken/users?login=${username}`)
     console.log(tags);
-    io.emit('twitch', `${displayName}: ${message} ${username}`);
     getUser(userID)
-.then(user => {
+        .then(user => {
     if(!user) {
         console.log('User not found');
     }
@@ -64,7 +63,9 @@ function onMessageHandler (channel, tags, message, self) {
         const name = `[${id}] ${display_name} (${login})`;
         const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
         console.log(`${name} -- ${props}`);
+        const profileElment = `<img src="${profile_image_url}" alt="null" id="itemImg">`
     }
+    io.emit('twitch', `${profileElment} ${displayName}: ${message} ${username}`);
 });
    
     // helix('users', `id=${userID}`)
