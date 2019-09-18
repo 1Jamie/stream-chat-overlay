@@ -30,10 +30,9 @@ function onMessageHandler (channel, tags, message, self) {
     //if (self) { return; } // Ignore messages from the bot
     // Remove whitespace from chat message
     const { username: login, 'display-name': displayName, 'user-id': userID } = tags;
-
     console.log('twitch', `${displayName} : ${message}`);
     console.log(tags[4]);
-    io.emit('twitch', message);
+    io.emit('twitch', `${displayName}: ${message}`);
 };
 
 const client = new tmi.client(config);
