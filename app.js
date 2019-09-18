@@ -29,8 +29,9 @@ function onConnectedHandler (addr, port) {
 function onMessageHandler (channel, tags, message, self) {
     //if (self) { return; } // Ignore messages from the bot
     // Remove whitespace from chat message
+
     console.log('twitch', tags + ' ' + message);
-    console.log(tags);
+    console.log(tags[4]);
     io.emit('twitch', message);
 };
 
