@@ -21,7 +21,7 @@
     "less-middleware": "*",
     "lodash": "1.x",
     "socket.io": "^2.2.0",
-    "tim.js": "^2.0"
+    "tmi.js": "^2.0"
   },
   "devDependencies": {
     "grunt": "0.4.x",
