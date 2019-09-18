@@ -17,7 +17,7 @@ var irc = require('irc');
 
 var config = {
     channels: ["#charja113"],
-    server: "irc.twitch.tv",
+    server: "irc.chat.twitch.tv",
     username: "charja113",
     nick: "charja113",
     password: "oauth:fzr7ox5bh74qagnt6aitux9ehpia5w",
@@ -31,20 +31,20 @@ app.get('/', function(req, res) {
     res.render('index.ejs');
 });
 
-var bot = new irc.Client(config.server, config.nick, config);
+var client = new irc.Client(config.server, config.nick, config);
 
-bot.connect(5, function(message) {
+client.connect(5, function(message) {
     console.log(message);
 });
 
-bot.addListener('registered', function() {
+client.addListener('registered', function() {
     console.log('bot connected');
 });
-bot.addListener('ping', function(){
+client.addListener('ping', function(){
     console.log('irc ping seen');
 });
 
-bot.addListener('message', function(from, message) {
+client.addListener('message', function(from, message) {
     io.emit(from + ' : ' + message );
     console.log('message seen');
 });
@@ -54,7 +54,7 @@ io.sockets.on('connection', function(socket) {
         socket.username = username;
         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
         console.log(
-            'user' + socket.username + 'connected'
+            'user ' + socket.username + ' connected'
         );
     });
     socket.on('disconnect', function(username) {
