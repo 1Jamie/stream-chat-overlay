@@ -35,7 +35,8 @@ function onMessageHandler (username, target, context, channel, tags, msg, self) 
   
     // Remove whitespace from chat message
     console.log('from ' + username );
-    io.emit(username + ' : ' + msg);
+    var soceket = io();
+    socket.emit( username + ' : ' + msg);
 };
 
 
@@ -50,13 +51,14 @@ const client = new tmi.client(config);
 client.on('connected', onConnectedHandler);
 client.on('message', onMessageHandler)
 
+client.connect();
+
 client.addListener('message', function(from, message) {
     io.emit(from + ' : ' + message );
     console.log('message seen');
 });
 
 io.sockets.on('connection', function(socket) {
-    client.connect();
     socket.on('username', function(username) {
         socket.username = username;
         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
