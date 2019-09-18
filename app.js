@@ -35,8 +35,8 @@ function onMessageHandler (username, target, context, channel, tags, msg, self) 
   
     // Remove whitespace from chat message
     console.log('from ' + username );
-    var soceket = io();
-    socket.emit( username + ' : ' + msg);
+   
+    io.emit( username + ' : ' + msg);
 };
 
 
