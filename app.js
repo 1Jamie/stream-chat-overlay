@@ -15,7 +15,7 @@ function helix(endpoint, qs) {
     return fetch(url, { headers })
     .then(res => console.log(res))
 }
-
+/*
 function getUser(id) {
     return helix('users', { id })
     .then(({ data: [ user ] }) => user || null);
@@ -36,7 +36,7 @@ getUser(userID)
         const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
         console.log(`${name} -- ${props}`);
     }
-});
+}); */
 
 app.use(express.static('public'))
 
