@@ -26,6 +26,8 @@ var config = {
 
 var bot = new irc.Client(config.server, config.nick, config);
 
+bot.connect();
+ 
 app.use(express.static('public'))
 
 app.get('/', function(req, res) {
