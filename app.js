@@ -35,18 +35,18 @@ function onMessageHandler (channel, tags, message, self) {
     io.emit('twitch', message);
 };
 
-client.on('message', (channel, tags, message, self) => {
-    if(self) return;
-    const { username: login, 'display-name': displayName, 'user-id': userID } = tags;
-    client.say(channel, `${displayName} (@${login}), your user ID is ${userID}`);
-});
-
 const client = new tmi.client(config);
 
 client.on('connected', onConnectedHandler);
 client.on('message', onMessageHandler)
 
 client.connect();
+
+client.on('message', (channel, tags, message, self) => {
+    if(self) return;
+    const { username: login, 'display-name': displayName, 'user-id': userID } = tags;
+    client.say(channel, `${displayName} (@${login}), your user ID is ${userID}`);
+});
 
 client.addListener('message', function(from, message) {
     console.log('message seen');
