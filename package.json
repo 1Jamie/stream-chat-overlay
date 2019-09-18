@@ -17,11 +17,11 @@
   "dependencies": {
     "ejs": "^2.7.1",
     "express": "^4.17.1",
-    "irc": "^0.5.2",
     "jade": "*",
     "less-middleware": "*",
     "lodash": "1.x",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "tim.js": "^2.0"
   },
   "devDependencies": {
     "grunt": "0.4.x",

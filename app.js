@@ -3,7 +3,6 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 var path = require('path');
-var irc = require('irc');
 const tmi = require('tmi.js');
 
 app.use(express.static('public'))
