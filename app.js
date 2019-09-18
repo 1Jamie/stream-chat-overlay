@@ -5,6 +5,12 @@ const io = require('socket.io')(http);
 var path = require('path');
 const tmi = require('tmi.js');
 const fetch = require('node-fetch');
+const { EmoteFetcher, EmoteParser } = require('twitch-emoticons');
+const fetcher = new EmoteFetcher();
+const parser = new EmoteParser(fetcher, {
+    type: 'markdown',
+    match: /:(.+?):/g
+});
 const headers = {
     'Client-ID': 'xf97asgwy19p4eqp26q052adtox710'
 };
@@ -44,31 +50,31 @@ function onConnectedHandler (addr, port) {
 };
 
 function onMessageHandler (channel, tags, message, self) {
-    //if (self) { return; } // Ignore messages from the bot
-    // Remove whitespace from chat message
-    const { 'user-name': username, 'display-name': displayName, 'user-id': userID } = tags;
+
+    const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub } = tags;
     console.log('twitch', `${displayName} : ${message}`);
-    //curl.get(`https://api.twitch.tv/kraken/users?login=${username}`)
     console.log(tags);
     getUser(userID)
         .then(user => {
-    if(!user) {
-        console.log('User not found');
-    }
-    else {
-        const {
-            id, display_name, login,
-            broadcaster_type, view_count, profile_image_url
-        } = user;
-        const name = `[${id}] ${display_name} (${login})`;
-        const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
-        console.log(`${name} -- ${props}`);
-        const profileElment = `<img class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
-        io.emit('twitch', `${ profileElment} ${displayName}: ${message}`);
-    }
-});
-   
-    // helix('users', `id=${userID}`)
+        if(!user) {
+            console.log('User not found');
+        }
+        else {
+            const {
+                id, display_name, login,
+                broadcaster_type, view_count, profile_image_url
+            } = user;
+            const name = `[${id}] ${display_name} (${login})`;
+            const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
+            fetcher.fetchTwitchEmotes().then(() => {
+                const parsed = parser.parse(message);
+                console.log(parsed);
+            });
+            console.log(`${name} -- ${props}`);
+            const profileElment = `<img class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
+            io.emit('twitch', `${ profileElment} ${displayName}: ${message}`);
+        }
+    });
 };
 
 const client = new tmi.client(config);

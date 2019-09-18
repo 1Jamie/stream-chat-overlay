@@ -21,7 +21,8 @@
     "less-middleware": "*",
     "lodash": "1.x",
     "socket.io": "^2.2.0",
-    "tmi.js": "*"
+    "tmi.js": "*",
+    "twitch-emoticons": ">=2.0.0"
   },
   "devDependencies": {
     "grunt": "0.4.x",
@@ -32,7 +33,7 @@
     "grunt-contrib-jshint": ">=0.3",
     "grunt-contrib-coffee": ">=0.6",
     "async": "0.1.x",
-    "nodemon": "*"
+    "nodemon": "*",
   },
   "keywords": [],
   "repository": {
