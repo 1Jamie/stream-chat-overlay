@@ -45,7 +45,9 @@ client.addListener('message', function(from, message) {
     io.emit(from + ' : ' + message );
     console.log('message seen');
 });
+
 io.sockets.on('connection', function(socket) {
+
     socket.on('username', function(username) {
         socket.username = username;
         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
@@ -55,7 +57,7 @@ io.sockets.on('connection', function(socket) {
     });
     socket.on('disconnect', function(username) {
         io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
-    })
+    });
 
 
 io.sockets.on('connection', function(socket) {
@@ -68,4 +70,4 @@ io.sockets.on('connection', function(socket) {
 
 const server = http.listen(80, function() {
     console.log('listening on *:80');
-});
+}); });
