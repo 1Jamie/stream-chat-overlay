@@ -66,10 +66,10 @@ function onMessageHandler (channel, tags, message, self) {
             } = user;
             const name = `[${id}] ${display_name} (${login})`;
             const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
-            fetcher.fetchTwitchEmotes().then(() => {
+            /*fetcher.fetchTwitchEmotes().then(() => {
                 const parsed = parser.parse(message);
                 console.log(parsed);
-            });
+            }); */
             console.log(`${name} -- ${props}`);
             const profileElment = `<img class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
             io.emit('twitch', `${ profileElment} ${displayName}: ${message}`);
