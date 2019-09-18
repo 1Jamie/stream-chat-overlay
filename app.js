@@ -34,6 +34,7 @@ function onMessageHandler (channel, tags, message, self) {
     console.log(tags[4]);
     io.emit('twitch', message);
 };
+
 client.on('message', (channel, tags, message, self) => {
     if(self) return;
     const { username: login, 'display-name': displayName, 'user-id': userID } = tags;
