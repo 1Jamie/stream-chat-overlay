@@ -64,8 +64,8 @@ function onMessageHandler (channel, tags, message, self) {
         const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
         console.log(`${name} -- ${props}`);
         const profileElment = `<img src="${profile_image_url}" alt="null" id="itemImg">`
+        io.emit('twitch', `${ profileElment} ${displayName}: ${message} ${username}`);
     }
-    io.emit('twitch', `${profileElment} ${displayName}: ${message} ${username}`);
 });
    
     // helix('users', `id=${userID}`)
