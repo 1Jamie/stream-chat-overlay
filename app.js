@@ -22,7 +22,7 @@ var config = {
         password: "oauth:fzr7ox5bh74qagnt6aitux9ehpia5w",
     },
     channels: [
-        charja113
+        'charja113'
     ]
 };
 
