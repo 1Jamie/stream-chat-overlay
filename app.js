@@ -40,6 +40,9 @@ io.sockets.on('connection', function(socket) {
     socket.on('username', function(username) {
         socket.username = username;
         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
+        console.log(
+            'user' + socket.username + 'connected'
+        );
     });
     bot.addListener("message", function(from, message) {
         io.emit(from + ':' + message );
