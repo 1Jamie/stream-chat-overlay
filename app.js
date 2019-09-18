@@ -30,7 +30,7 @@ function onMessageHandler (channel, tags, message, self) {
     //if (self) { return; } // Ignore messages from the bot
     // Remove whitespace from chat message
     console.log('twitch', tags + ' ' + message);
-    const { username: login, 'display-name': displayName, 'user-id': userID } = tags;
+    console.log(tags);
     io.emit('twitch', message);
 };
 
@@ -42,7 +42,6 @@ client.on('message', onMessageHandler)
 client.connect();
 
 client.addListener('message', function(from, message) {
-    io.emit(from + ' : ' + message );
     console.log('message seen');
 });
 
