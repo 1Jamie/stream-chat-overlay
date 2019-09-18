@@ -9,11 +9,6 @@ const headers = {
     'Client-ID': 'xf97asgwy19p4eqp26q052adtox710'
 };
 
-const fetch = require('node-fetch');
-const headers = {
-    'Client-ID': 'my-client-id'
-};
-
 function helix(endpoint, qs) {
     const queryString = new URLSearchParams(qs);
     const url = `https://api.twitch.tv/helix/${endpoint}?${queryString}`;
