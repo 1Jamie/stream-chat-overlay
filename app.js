@@ -4,6 +4,39 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 var path = require('path');
 const tmi = require('tmi.js');
+const fetch = require('node-fetch');
+const headers = {
+    'Client-ID': 'xf97asgwy19p4eqp26q052adtox710'
+};
+
+function helix(endpoint, qs) {
+    const queryString = new URLSearchParams(qs);
+    const url = `https://api.twitch.tv/helix/${endpoint}?${queryString}`;
+    return fetch(url, { headers })
+    .then(res => console.log(res))
+}
+
+function getUser(id) {
+    return helix('users', { id })
+    .then(({ data: [ user ] }) => user || null);
+}
+
+const userID = '7676884';
+getUser(userID)
+.then(user => {
+    if(!user) {
+        console.log('User not found');
+    }
+    else {
+        const {
+            id, display_name, login,
+            broadcaster_type, view_count, profile_image_url
+        } = user;
+        const name = `[${id}] ${display_name} (${login})`;
+        const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
+        console.log(`${name} -- ${props}`);
+    }
+});
 
 app.use(express.static('public'))
 
@@ -28,10 +61,12 @@ function onConnectedHandler (addr, port) {
 function onMessageHandler (channel, tags, message, self) {
     //if (self) { return; } // Ignore messages from the bot
     // Remove whitespace from chat message
-    const { username: login, 'display-name': displayName, 'user-id': userID } = tags;
+    const { 'user-name': username, 'display-name': displayName, 'user-id': userID } = tags;
     console.log('twitch', `${displayName} : ${message}`);
+    //curl.get(`https://api.twitch.tv/kraken/users?login=${username}`)
     console.log(tags);
     io.emit('twitch', `${displayName}: ${message}`);
+    helix(users, `login=${username}`)
 };
 
 const client = new tmi.client(config);
