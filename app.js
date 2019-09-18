@@ -21,13 +21,15 @@ var config = {
     username: "charja113",
     nick: "charja113",
     password: "oauth:fzr7ox5bh74qagnt6aitux9ehpia5w",
-    sasl: true
+    sasl: true,
+    autoConnect: true
 };
 
 var bot = new irc.Client(config.server, config.nick, config);
 
 bot.connect();
- 
+console.log('bot connected');
+
 app.use(express.static('public'))
 
 app.get('/', function(req, res) {
