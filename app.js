@@ -59,9 +59,7 @@ client.addListener('message', function(from, message) {
 });
 
 io.sockets.on('connection', function(socket) {
-    socket.on('username', function(username) {
-        socket.username = username;
-
+    
     socket.on('chat_message', function(message) {
         io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
     });
