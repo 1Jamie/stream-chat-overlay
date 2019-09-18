@@ -33,6 +33,10 @@ app.get('/', function(req, res) {
 
 var bot = new irc.Client(config.server, config.nick, config);
 
+bot.connect(5, function(message) {
+    console.log(message);
+});
+
 bot.addListener('registered', function() {
     console.log('bot connected');
 });
