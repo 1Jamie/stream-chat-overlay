@@ -36,8 +36,8 @@
             socket.on('chat_message', function(msg){
                 $('#messages').append($('<li>').html(msg).attr('id', messageId));
                   var rmElement = document.getElementById(messageId)
+                  console.log(rmElement);
                   setTimeout(function() {
-                    console.log(rmElement);
                     rmElement.remove
                   }, timeout);
                   messageId++
