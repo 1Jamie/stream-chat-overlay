@@ -26,13 +26,13 @@ function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
 };
 
-function onMessageHandler (username, target, context, channel, tags, msg, self) {
+function onMessageHandler (username, msg, self) {
     if (self) { return; } // Ignore messages from the bot
-  
+    var msgWrite = msg
     // Remove whitespace from chat message
     console.log('from ' + username );
    
-    io.emit('twitch', username + ' : ' + msg);
+    io.emit('twitch', username + msgWrite);
 };
 
 const client = new tmi.client(config);
