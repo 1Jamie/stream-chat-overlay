@@ -32,7 +32,7 @@ function onMessageHandler (username, target, context, channel, tags, msg, self) 
     // Remove whitespace from chat message
     console.log('from ' + username );
    
-    io.send('twitch', username + ' : ' + msg);
+    io.emit('twitch', username + ' : ' + msg);
 };
 
 const client = new tmi.client(config);
