@@ -27,7 +27,6 @@ var config = {
 
 var bot = new irc.Client(config.server, config.nick, config);
 
-bot.connect();
 console.log('bot connected');
 
 app.use(express.static('public'))
@@ -35,6 +34,10 @@ app.use(express.static('public'))
 app.get('/', function(req, res) {
     res.render('index.ejs');
 });
+bot.addListener("message", function(from, message) {
+    io.emit(from + ':' + message );
+    console.log('message seen');
+})
 
 io.sockets.on('connection', function(socket) {
     socket.on('username', function(username) {
@@ -44,10 +47,6 @@ io.sockets.on('connection', function(socket) {
             'user' + socket.username + 'connected'
         );
     });
-    bot.addListener("message", function(from, message) {
-        io.emit(from + ':' + message );
-        console.log('message seen');
-    })
     socket.on('disconnect', function(username) {
         io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
     })
