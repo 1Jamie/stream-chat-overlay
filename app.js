@@ -15,28 +15,12 @@ function helix(endpoint, qs) {
     return fetch(url, { headers })
     .then(res => console.log(res))
 }
-/*
+
 function getUser(id) {
     return helix('users', { id })
     .then(({ data: [ user ] }) => user || null);
 }
 
-const userID = '7676884';
-getUser(userID)
-.then(user => {
-    if(!user) {
-        console.log('User not found');
-    }
-    else {
-        const {
-            id, display_name, login,
-            broadcaster_type, view_count, profile_image_url
-        } = user;
-        const name = `[${id}] ${display_name} (${login})`;
-        const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
-        console.log(`${name} -- ${props}`);
-    }
-}); */
 
 app.use(express.static('public'))
 
@@ -66,7 +50,21 @@ function onMessageHandler (channel, tags, message, self) {
     //curl.get(`https://api.twitch.tv/kraken/users?login=${username}`)
     console.log(tags);
     io.emit('twitch', `${displayName}: ${message} ${username}`);
-    helix('users', `id=${userID}`)
+    getUser(userID)
+        .then(user => {
+            if(!user) {
+                console.log('User not found');
+            }
+            else {
+                const {
+                    id, display_name, login,
+                    broadcaster_type, view_count, profile_image_url
+                } = user;
+                const name = `[${id}] ${display_name} (${login})`;
+                const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
+                console.log(`${name} -- ${props}`);
+            }
+        });
 };
 
 const client = new tmi.client(config);
