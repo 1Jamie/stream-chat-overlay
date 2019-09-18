@@ -27,12 +27,11 @@ function onConnectedHandler (addr, port) {
 };
 
 function onMessageHandler (username, msg, self) {
-    if (self) { return; } // Ignore messages from the bot
-    var msgWrite = msg
+    //if (self) { return; } // Ignore messages from the bot
     // Remove whitespace from chat message
     console.log('from ' + username );
    
-    io.emit('twitch', username + msgWrite);
+    io.emit('twitch', username + msg);
 };
 
 const client = new tmi.client(config);
