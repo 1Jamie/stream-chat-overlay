@@ -43,7 +43,7 @@ bot.addListener('ping', function(){
 bot.addListener('message', function(from, message) {
     io.emit(from + ' : ' + message );
     console.log('message seen');
-});x
+});
 
 io.sockets.on('connection', function(socket) {
     socket.on('username', function(username) {
