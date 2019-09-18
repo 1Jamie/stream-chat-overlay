@@ -41,8 +41,9 @@ io.sockets.on('connection', function(socket) {
         socket.username = username;
         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
     });
-    bot.addListener("nessage", function(from, message) {
+    bot.addListener("message", function(from, message) {
         io.emit(from + ':' + message );
+        console.log('message seen');
     })
     socket.on('disconnect', function(username) {
         io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
