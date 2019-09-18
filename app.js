@@ -5,16 +5,12 @@ const io = require('socket.io')(http);
 var path = require('path');
 var irc = require('irc');
 const tmi = require('tmi.js');
-//var ircconf = [
-//    options : {channels:['#charja113'], port: 6667, seucure: true, userName: 'charbot', realname: 'charbot'},
-//    ]
 
-// viewed at http://localhost:8080
-//app.get('/', function(req, res) {
-//    res.sendFile('/home/jamie/StreamChatOverlay/index.html');
-//    res.sendFile('/home/jamie/StreamChatOverlay/public/twitch.js');
-//    res.sendFile('/home/jamie/StreamChatOverlay/public/youtube.js');
-//});
+app.use(express.static('public'))
+
+app.get('/', function(req, res) {
+    res.render('index.ejs');
+});
 
 var config = {
     identity: {
@@ -36,15 +32,8 @@ function onMessageHandler (username, target, context, channel, tags, msg, self) 
     // Remove whitespace from chat message
     console.log('from ' + username );
    
-    io.send( username + ' : ' + msg);
+    io.send('twitch', username + ' : ' + msg);
 };
-
-
-app.use(express.static('public'))
-
-app.get('/', function(req, res) {
-    res.render('index.ejs');
-});
 
 const client = new tmi.client(config);
 

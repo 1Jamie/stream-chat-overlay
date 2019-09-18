@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Simple Group Chat on Node.js</title>
+    <title>Stream Chat Overlay</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font: 13px Helvetica, Arial; }
@@ -33,6 +33,10 @@
             socket.on('chat_message', function(msg){
                 $('#messages').append($('<li>').html(msg));
             });
+            socket.on('twitch', function(msg) {
+                $('#messages').append($('<li>').html(msg));
+            })
+
             // append text if someone is online
             socket.on('is_online', function(username) {
                 $('#messages').append($('<li>').html(username));
