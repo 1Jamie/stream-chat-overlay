@@ -29,8 +29,9 @@ function onConnectedHandler (addr, port) {
 function onMessageHandler (channel, tags, message, self) {
     //if (self) { return; } // Ignore messages from the bot
     // Remove whitespace from chat message
+    const { username: login, 'display-name': displayName, 'user-id': userID } = tags;
 
-    console.log('twitch', tags + ' ' + message);
+    console.log('twitch', `${displayName} : ${message}`);
     console.log(tags[4]);
     io.emit('twitch', message);
 };
@@ -41,12 +42,6 @@ client.on('connected', onConnectedHandler);
 client.on('message', onMessageHandler)
 
 client.connect();
-
-client.on('message', (channel, tags, message, self) => {
-    if(self) return;
-    const { username: login, 'display-name': displayName, 'user-id': userID } = tags;
-    client.say(channel, `${displayName} (@${login}), your user ID is ${userID}`);
-});
 
 client.addListener('message', function(from, message) {
     console.log('message seen');
