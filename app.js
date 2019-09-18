@@ -31,7 +31,7 @@ function onMessageHandler (channel, tags, message, self) {
     // Remove whitespace from chat message
     console.log('twitch', '${displayName} (@${login})' + '' + message);
     const { username: login, 'display-name': displayName, 'user-id': userID } = tags;
-    io.emit('twitch', '${displayName} (@${login})' + '' + message);
+    io.emit('twitch', message);
 };
 
 const client = new tmi.client(config);
@@ -45,6 +45,18 @@ client.addListener('message', function(from, message) {
     io.emit(from + ' : ' + message );
     console.log('message seen');
 });
+io.sockets.on('connection', function(socket) {
+    socket.on('username', function(username) {
+        socket.username = username;
+        io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
+        console.log(
+            'user ' + socket.username + ' connected'
+        );
+    });
+    socket.on('disconnect', function(username) {
+        io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
+    })
+
 
 io.sockets.on('connection', function(socket) {
     
