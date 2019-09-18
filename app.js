@@ -66,7 +66,7 @@ function onMessageHandler (channel, tags, message, self) {
     //curl.get(`https://api.twitch.tv/kraken/users?login=${username}`)
     console.log(tags);
     io.emit('twitch', `${displayName}: ${message} ${username}`);
-    helix('users', `login=${username}`)
+    helix('users', `userid=${userID}`)
 };
 
 const client = new tmi.client(config);
