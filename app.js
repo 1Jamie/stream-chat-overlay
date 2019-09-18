@@ -25,19 +25,25 @@ var config = {
     autoConnect: true
 };
 
-var bot = new irc.Client(config.server, config.nick, config);
-
-console.log('bot connected');
-
 app.use(express.static('public'))
 
 app.get('/', function(req, res) {
     res.render('index.ejs');
 });
-bot.addListener("message", function(from, message) {
-    io.emit(from + ':' + message );
+
+var bot = new irc.Client(config.server, config.nick, config);
+
+bot.addListener('registered', function() {
+    console.log('bot connected');
+});
+bot.addListener('ping', function(){
+    console.log('irc ping seen');
+});
+
+bot.addListener('message', function(from, message) {
+    io.emit(from + ' : ' + message );
     console.log('message seen');
-})
+});x
 
 io.sockets.on('connection', function(socket) {
     socket.on('username', function(username) {
