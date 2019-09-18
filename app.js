@@ -31,7 +31,7 @@ function onMessageHandler (channel, tags, message, self) {
     // Remove whitespace from chat message
     const { username: login, 'display-name': displayName, 'user-id': userID } = tags;
     console.log('twitch', `${displayName} : ${message}`);
-    console.log(tags[4]);
+    console.log(tags);
     io.emit('twitch', `${displayName}: ${message}`);
 };
 
