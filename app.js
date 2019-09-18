@@ -4,6 +4,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 var path = require('path');
 var irc = require('irc');
+const tmi = require('tmi.js');
 //var ircconf = [
 //    options : {channels:['#charja113'], port: 6667, seucure: true, userName: 'charbot', realname: 'charbot'},
 //    ]
@@ -16,14 +17,26 @@ var irc = require('irc');
 //});
 
 var config = {
-    channels: ["#charja113"],
-    server: "irc.chat.twitch.tv",
-    username: "charja113",
-    nick: "charja113",
-    password: "oauth:fzr7ox5bh74qagnt6aitux9ehpia5w",
-    sasl: true,
-    autoConnect: true
+    identity: {
+        username: "charja113",
+        password: "oauth:fzr7ox5bh74qagnt6aitux9ehpia5w",
+    },
+    channels: [
+        charja113
+    ]
 };
+
+function onConnectedHandler (addr, port) {
+    console.log(`* Connected to ${addr}:${port}`);
+};
+
+function onMessageHandler (target, context, msg, self) {
+    if (self) { return; } // Ignore messages from the bot
+  
+    // Remove whitespace from chat message
+    console.log( 'target ' + target + ' context ' + context + ' msg ' + msg + ' self ' + self)
+};
+
 
 app.use(express.static('public'))
 
@@ -31,18 +44,10 @@ app.get('/', function(req, res) {
     res.render('index.ejs');
 });
 
-var client = new irc.Client(config.server, config.nick, config);
+const client = new tmi.client(config);
 
-client.connect(5, function(message) {
-    console.log(message);
-});
-
-client.addListener('registered', function() {
-    console.log('bot connected');
-});
-client.addListener('ping', function(){
-    console.log('irc ping seen');
-});
+client.on('connected', onConnectedHandler);
+client.on('message', onMessageHandler)
 
 client.addListener('message', function(from, message) {
     io.emit(from + ' : ' + message );
@@ -50,6 +55,7 @@ client.addListener('message', function(from, message) {
 });
 
 io.sockets.on('connection', function(socket) {
+    client.connect();
     socket.on('username', function(username) {
         socket.username = username;
         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
