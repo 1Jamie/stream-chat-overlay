@@ -34,7 +34,7 @@ function onMessageHandler (username, target, context, channel, tags, msg, self) 
     if (self) { return; } // Ignore messages from the bot
   
     // Remove whitespace from chat message
-    console.log('from ' + username + ' target ' + target + ' context ' + context + ' msg ' + msg + ' self ' + self)
+    console.log('from ' + username );
 };
 
 
