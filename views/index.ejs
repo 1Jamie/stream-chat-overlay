@@ -34,16 +34,20 @@
             // append the chat text message
             socket.on('chat_message', function(msg){
                 $('#messages').append($('<li>').html(msg).attr('id', messageId));
+                  var rmElement = document.getElementById(messageId)
                   setTimeout(function() {
-                    (`#${messageId}`).remove();
-                  }, 14000);
+                    rmElement.remove
+                  }, timeout);
+                  rmElement.remove
                   messageId++
             });
             socket.on('twitch', function(msg) {
                 $('#messages').append($('<li>').html(msg).attr('id', messageId));
+                  var rmElement = document.getElementById(messageId)
                   setTimeout(function() {
-                    (`#${messageId}`).remove();
-                  }, 14000);
+                    rmElement.remove
+                  }, timeout);
+                  rmElement.remove
                   messageId++
             })
 
