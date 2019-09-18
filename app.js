@@ -30,11 +30,11 @@ function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
 };
 
-function onMessageHandler (from, target, context, msg, self) {
+function onMessageHandler (username, channel, tags, message, self) {
     if (self) { return; } // Ignore messages from the bot
   
     // Remove whitespace from chat message
-    console.log('from ' + from + ' target ' + target + ' context ' + context + ' msg ' + msg + ' self ' + self)
+    console.log('from ' + username + ' target ' + target + ' context ' + context + ' msg ' + msg + ' self ' + self)
 };
 
 
