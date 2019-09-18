@@ -34,22 +34,10 @@
             });
             // append the chat text message
             socket.on('chat_message', function(msg){
-                $('#messages').append($('<li>').html(msg).attr('id', messageId));
-                  var rmElement = document.getElementById(messageId)
-                  console.log(rmElement);
-                  setTimeout(function() {
-                    rmElement.remove
-                  }, timeout);
-                  messageId++
+                $('#messages').append($('<li>').html(msg).attr('id', messageId).delay(5000).fadeOut(100));
             });
             socket.on('twitch', function(msg) {
-                $('#messages').append($('<li>').html(msg).attr('id', messageId));
-                  var rmElement = document.getElementById(messageId)
-                  setTimeout(function() {
-                    rmElement.remove
-                  }, timeout);
-                  rmElement.remove
-                  messageId++
+                $('#messages').append($('<li>').html(msg).attr('id', messageId).delay(5000).fadeOut(100));
             })
 
             // append text if someone is online
