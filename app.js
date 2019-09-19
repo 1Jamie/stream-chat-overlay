@@ -78,9 +78,9 @@ function onMessageHandler (channel, tags, message, self) {
             var dashLoc = placement.indexOf('-')
             var furstnum = placement.slice(2, dashLoc )
             console.log( furstnum)
-            var secondnum = placement.slice(dashLoc+1, placement.length-2)
+            var secondnum = placement.slice(parseInt(dashLoc, 10)+1, parseInt(placement.length)-2)
             console.log(secondnum)
-            var rmWord = message.slice(furstnum, secondnum+1)
+            var rmWord = message.slice(furstnum, parseInt(secondnum)+1)
             console.log('rmwork: ' + rmWord)
             message1 = message1.replace(rmWord, emoteUrl )
             console.log(message1);
