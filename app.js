@@ -31,8 +31,22 @@ function splice(start, end, insert, message){
 
 function emoteParse(emoteInf, msg) {
     const emoturl = `https://static-cdn.jtvnw.net/emoticons/v1/${emotenum}/1.0`;
-    emoteNum = emoteInf
-
+    console.log(emote);
+    emoteStr = JSON.stringify(emote);
+    var buf = Buffer.from(JSON.stringify(emote));
+    var splitLoc = buf.indexOf(':');
+    var midLoc = splitLoc + 3;
+    var endLoc = buf.indexOf(']');
+    var dasLoc = buf.indexOf('-');
+    var emotenum = emoteStr.slice(2, splitLoc-1);
+    var startNum = emoteStr.slice(midLoc, dasLoc);
+    var endNum = emoteStr.slice(dasLoc+1, endLoc-1);
+    console.log(startNum);
+    console.log(endNum);
+    console.log(emotenum);
+    console.log(midLoc);
+    message1 = message.splice(startNum, endNum, emoturl, msg);
+    console.log(message1);
 }
 
 function getUser(id) {
@@ -67,20 +81,7 @@ function onMessageHandler (channel, tags, message, self) {
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
 
     if(emote != null) {
-        console.log(emote);
-        emoteStr = JSON.stringify(emote);
-        var buf = Buffer.from(JSON.stringify(emote));
-        var splitLoc = buf.indexOf(':');
-        var midLoc = splitLoc + 3;
-        var endLoc = buf.indexOf(']');
-        var dasLoc = buf.indexOf('-');
-        var emotenum = emoteStr.slice(2, splitLoc-1);
-        var startNum = emoteStr.slice(midLoc, dasLoc);
-        var endNum = emoteStr.slice(dasLoc+1, endLoc-1);
-        console.log(startNum);
-        console.log(endNum);
-        console.log(emotenum);
-        console.log(midLoc);
+
 
     }
     else {
