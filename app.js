@@ -67,7 +67,7 @@ function onMessageHandler (channel, tags, message, self) {
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
     console.log(emote);
     if(emote != null) {
-        var message1
+        var message1 = message;
         Object.keys(emote).forEach(function(key){
             console.log(key, emote[key] );
             var emoteUrl = `<img class="profImg" src="https://static-cdn.jtvnw.net/emoticons/v1/${key}/1.0" alt="${key}" id="${key}">`;
@@ -79,7 +79,7 @@ function onMessageHandler (channel, tags, message, self) {
             var secondnum = placement.slice(dashLoc+1, placement.length-2)
             console.log(secondnum)
             var rmWord = message.slice(furstnum, secondnum)
-            message1 = message.replace(rmWord, emoteUrl )
+            message1 = message1.replace(rmWord, emoteUrl )
             console.log(message1);
             });
     }
