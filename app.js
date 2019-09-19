@@ -13,7 +13,7 @@ const parser = new EmoteParser(fetcher, {
     match: /:(.+?):/g
 });
 const headers = {
-    'Client-ID': 'xf97asgwy19p4eqp26q052adtox710'
+    'Client-ID': info.key
 };
 
 function helix(endpoint, qs) {
