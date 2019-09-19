@@ -65,12 +65,14 @@ function onConnectedHandler (addr, port) {
 function onMessageHandler (channel, tags, message, self) {
 
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
-    if (emote !== null) {
+
+    if(emote != null) {
         console.log(emote);
     }
     else {
         console.log('i think we messed up if theres an emote');
-    };
+    }
+
     console.log('twitch', `${displayName} : ${message}`);
     //console.log(tags);
     getUser(userID)
