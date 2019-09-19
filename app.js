@@ -70,10 +70,10 @@ function onMessageHandler (channel, tags, message, self) {
         console.log(emote);
         var buf = Buffer.from(JSON.stringify(emote));
         var splitLoc = buf.indexOf(':');
-        var midLoc = midLoc + 4;
+        var midLoc = splitLoc + 4;
         var endLoc = buf.length - 4;
         var dasLoc = buf.indexOf('-');
-        var emotenum = buf.slice(splitLoc).slice(0, 1);
+        var emotenum = buf.toString.slice(splitLoc);
         console.log(emotenum);
 
         console.log(midLoc);
