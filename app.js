@@ -66,7 +66,6 @@ function onMessageHandler (channel, tags, message, self) {
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
 
     if(emote != null) {
-        const emoturl = `https://static-cdn.jtvnw.net/emoticons/v1/${emotenum}/1.0`;
         console.log(emote);
         emoteStr = JSON.stringify(emote);
         var buf = Buffer.from(JSON.stringify(emote));
@@ -77,6 +76,7 @@ function onMessageHandler (channel, tags, message, self) {
         var emotenum = emoteStr.slice(2, splitLoc-1);
         var startNum = emoteStr.slice(midLoc, dasLoc);
         var endNum = emoteStr.slice(dasLoc+1, endLoc-1);
+        const emoturl = `https://static-cdn.jtvnw.net/emoticons/v1/${emotenum}/1.0`;
         console.log(startNum);
         console.log(endNum);
         console.log(emotenum);
@@ -102,10 +102,6 @@ function onMessageHandler (channel, tags, message, self) {
             } = user;
             const name = `[${id}] ${display_name} (${login})`;
             const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
-            /*fetcher.fetchTwitchEmotes().then(() => {
-                const parsed = parser.parse(message);
-                console.log(parsed);
-            }); */
             console.log(`${name} -- ${props}`);
             const profileElment = `<img class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
             io.emit('twitch', `${ profileElment} ${displayName}: ${message}`);
