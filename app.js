@@ -23,11 +23,11 @@ function helix(endpoint, qs) {
     .then(res => res.json())
 }
 
-function splice(start, end, insert, message){
+function splice(start, end, insert, message, length){
     startStr = message.slice(0, start);
     console.log(startStr);
     console.log(end)
-    endStr =  message.slice(end);
+    endStr =  message.slice(end, length );
     messageOut = startStr + insert + endStr
 }
 
@@ -77,12 +77,13 @@ function onMessageHandler (channel, tags, message, self) {
         var emotenum = emoteStr.slice(2, splitLoc-1);
         var startNum = emoteStr.slice(midLoc, dasLoc);
         var endNum = emoteStr.length - 5 ;
+        var msgLen = emoteStr.length;
         const emoturl = `<img class="profImg" src="https://static-cdn.jtvnw.net/emoticons/v1/${emotenum}/1.0" alt="${emotenum}" id="itemImg">`;
         console.log(startNum);
         console.log(endNum);
         console.log(emotenum);
         console.log(midLoc);
-        splice(startNum, endNum, emoturl, message);
+        splice(startNum, endNum, emoturl, message, );
         console.log(messageOut);
         var message1 = messageOut;
     }
