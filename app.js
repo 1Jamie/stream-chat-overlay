@@ -24,9 +24,9 @@ function helix(endpoint, qs) {
 }
 
 function splice(start, end, insert, message){
-    startStr = message.slice(end);
+    startStr = message.slice(0, start);
     console.log(startStr);
-    endStr = message.slice(0, start);
+    endStr =  message.slice(end);
     messageOut = startStr + insert + endStr
 }
 
