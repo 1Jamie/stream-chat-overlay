@@ -57,6 +57,9 @@ var config = {
         'charja113'
     ]
 };
+function onCheer(channel, userstate, message){
+    console.log(channel, userstate, message);
+}
 
 function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
@@ -117,6 +120,7 @@ const client = new tmi.client(config);
 
 client.on('connected', onConnectedHandler);
 client.on('message', onMessageHandler)
+client.on('cheer', onCheer);
 
 client.connect();
 
