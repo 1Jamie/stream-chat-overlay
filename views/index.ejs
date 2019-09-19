@@ -40,6 +40,7 @@
                 $('#messages').append($('<li>').html(msg).attr('id', messageId).delay(timeout).fadeOut(100));
             })
             socket.on('cheer', function(msg){
+              console.log(msg);
                 $('#messages').append($('<li>').html(msg).attr('id', messageid).delay(timeout).fadeOut(100));
             })
             // append text if someone is online

@@ -59,7 +59,7 @@ var config = {
 };
 function onCheer(channel, userstate, message){
     console.log('channle: ' + channel, 'UserState: ' + userstate, "message: " + message);
-    io.emit('cheer', `${message}`);
+    io.emit('cheer', message);
 }
 
 function onConnectedHandler (addr, port) {
