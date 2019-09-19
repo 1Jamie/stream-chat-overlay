@@ -68,10 +68,10 @@ function onMessageHandler (channel, tags, message, self) {
     console.log(emote);
     
     if(emote != null) {
+        var message1 = message;
         var keyCount  = Object.keys(emote).length
         Object.keys(emote).forEach(function(key){
             console.log(key, emote[key] );
-            var message1 = message;
             var emoteUrl = `<img class="profImg" src="https://static-cdn.jtvnw.net/emoticons/v1/${key}/1.0" alt="${key}" id="${key}">`;
             var placement = JSON.stringify(emote[key])
             console.log(placement.indexOf('-'))
