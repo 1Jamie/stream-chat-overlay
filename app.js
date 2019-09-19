@@ -77,7 +77,7 @@ function onMessageHandler (channel, tags, message, self) {
         var emotenum = emoteStr.slice(2, splitLoc-1);
         var startNum = emoteStr.slice(midLoc, dasLoc);
         var endNum = emoteStr.slice(dasLoc+1, endLoc-1)
-        endNum = parseint(endNum, 10) +1;
+        endNum = parseInt(endNum, 10) +1;
         const emoturl = `<img class="profImg" src="https://static-cdn.jtvnw.net/emoticons/v1/${emotenum}/1.0" alt="${emotenum}" id="itemImg">`;
         console.log(startNum);
         console.log(endNum);
