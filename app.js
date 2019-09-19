@@ -60,9 +60,7 @@ var config = {
 function onCheer(channel, userstate, message){
     console.log(userstate);
     console.log('message: ' + message);
-    io.emit('cheer', message).then(function(){
-        console.log('emit made');
-    });
+    io.emit('cheer', message);
 }
 
 function onConnectedHandler (addr, port) {
