@@ -71,8 +71,8 @@ function onMessageHandler (channel, tags, message, self) {
         emoteStr = JSON.stringify(emote);
         var buf = Buffer.from(JSON.stringify(emote));
         var splitLoc = buf.indexOf(':');
-        var midLoc = splitLoc + 4;
-        var endLoc = buf.length - 4;
+        var midLoc = splitLoc + 3;
+        var endLoc = buf.indexOf(']');
         var dasLoc = buf.indexOf('-');
         var emotenum = emoteStr.slice(2, splitLoc-1);
         var startNum = emoteStr.slice(midLoc, dasLoc);
