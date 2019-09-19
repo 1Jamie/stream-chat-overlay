@@ -75,8 +75,8 @@ function onMessageHandler (channel, tags, message, self) {
         var endLoc = buf.indexOf(']');
         var dasLoc = buf.indexOf('-');
         var emotenum = emoteStr.slice(2, splitLoc-1);
-        var startNum = emoteStr.slice(midLoc+1, dasLoc-1);
-        var endNum = emoteStr.slice(dasLoc, endLoc);
+        var startNum = emoteStr.slice(midLoc, dasLoc);
+        var endNum = emoteStr.slice(dasLoc+1, endLoc-1);
         console.log(startNum);
         console.log(endNum);
         console.log(emotenum);
