@@ -23,6 +23,18 @@ function helix(endpoint, qs) {
     .then(res => res.json())
 }
 
+function splice(start, end, insert, message){
+    startStr = message.slice(end);
+    endStr = message.slice(0, start);
+    message = startStr + insert + endStr
+}
+
+function emoteParse(emoteInf, msg) {
+    const emoturl = `https://static-cdn.jtvnw.net/emoticons/v1/${emotenum}/1.0`;
+    emoteNum = emoteInf
+
+}
+
 function getUser(id) {
     return helix('users', { id })
     .then(({ data: [ user ] }) => user || null);
@@ -52,7 +64,13 @@ function onConnectedHandler (addr, port) {
 
 function onMessageHandler (channel, tags, message, self) {
 
-    const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub } = tags;
+    const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
+    if (emote !== null) {
+        console.log(emote);
+    }
+    else {
+        console.log('i think we messed up if theres an emote');
+    };
     console.log('twitch', `${displayName} : ${message}`);
     console.log(tags);
     getUser(userID)
