@@ -26,7 +26,7 @@ function helix(endpoint, qs) {
 function splice(start, end, insert, message){
     startStr = message.slice(end);
     endStr = message.slice(0, start);
-    message = startStr + insert + endStr
+    messageOut = startStr + insert + endStr
 }
 
 function emoteParse(emoteInf, msg) {
@@ -80,8 +80,8 @@ function onMessageHandler (channel, tags, message, self) {
         console.log(endNum);
         console.log(emotenum);
         console.log(midLoc);
-        message1 = message.splice(startNum, endNum, emoturl, msg);
-        console.log(message1);
+        splice(startNum, endNum, emoturl, message);
+        console.log(messageOut);
     }
     else {
         console.log('i think we messed up if theres an emote');
