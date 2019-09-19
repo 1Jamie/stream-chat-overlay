@@ -68,8 +68,7 @@ function onMessageHandler (channel, tags, message, self) {
 
     if(emote != null) {
         console.log(emote);
-        emoteJson = emote.json
-        console.log(emoteJson[0]);
+        console.log(emote[0]);
     }
     else {
         console.log('i think we messed up if theres an emote');
