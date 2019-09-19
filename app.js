@@ -23,11 +23,11 @@ function helix(endpoint, qs) {
     .then(res => res.json())
 }
 
-function splice(start, end, insert, message, length){
+function splice(start, end, insert, message){
     startStr = message.slice(0, start);
     console.log(startStr);
     console.log(end)
-    endStr =  message.slice(end, length-1);
+    endStr =  message.slice(end);
     messageOut = startStr + insert + endStr
 }
 
@@ -83,7 +83,7 @@ function onMessageHandler (channel, tags, message, self) {
         console.log(endNum);
         console.log(emotenum);
         console.log(midLoc);
-        splice(startNum, endNum, emoturl, message, msgLen);
+        splice(startNum, endNum, emoturl, message);
         console.log(messageOut);
         var message1 = messageOut;
     }
