@@ -22,7 +22,8 @@
     "lodash": "1.x",
     "socket.io": "^2.2.0",
     "tmi.js": "*",
-    "twitch-emoticons": ">=2.0.0"
+    "twitch-emoticons": ">=2.0.0",
+    "node-fetch": "*"
   },
   "devDependencies": {
     "grunt": "0.4.x",
