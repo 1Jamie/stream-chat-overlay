@@ -76,19 +76,21 @@ function onMessageHandler (channel, tags, message, self) {
         var emotenum = emoteStr.slice(2, splitLoc-1);
         var startNum = emoteStr.slice(midLoc, dasLoc);
         var endNum = emoteStr.slice(dasLoc+1, endLoc-1);
-        const emoturl = `https://static-cdn.jtvnw.net/emoticons/v1/${emotenum}/1.0`;
+        const emoturl = `<img class="profImg" src="https://static-cdn.jtvnw.net/emoticons/v1/${emotenum}/1.0" alt="${emotenum}" id="itemImg">`;
         console.log(startNum);
         console.log(endNum);
         console.log(emotenum);
         console.log(midLoc);
         splice(startNum, endNum, emoturl, message);
         console.log(messageOut);
+        var message1 = messageOut;
     }
     else {
         console.log('i think we messed up if theres an emote');
+        var message1 = message;
     }
 
-    console.log('twitch', `${displayName} : ${message}`);
+    console.log('twitch', `${displayName} : ${message1}`);
     //console.log(tags);
     getUser(userID)
         .then(user => {
@@ -104,7 +106,7 @@ function onMessageHandler (channel, tags, message, self) {
             const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
             console.log(`${name} -- ${props}`);
             const profileElment = `<img class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
-            io.emit('twitch', `${ profileElment} ${displayName}: ${message}`);
+            io.emit('twitch', `${ profileElment} ${displayName}: ${message1}`);
         }
     });
 };
