@@ -68,8 +68,7 @@ function onMessageHandler (channel, tags, message, self) {
 
     if(emote != null) {
         console.log(emote);
-        var buf = Buffer.from(json.stringify(emote));
-        var midLoc = buf.indexOf(':');
+        var midLoc = emote.indexOf(':');
         console.log(midLoc);
 
     }
