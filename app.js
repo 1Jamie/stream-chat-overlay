@@ -15,7 +15,7 @@ const parser = new EmoteParser(fetcher, {
 const headers = {
     'Client-ID': info.key
 };
-
+//this is the function for making the helix calls as you can see
 function helix(endpoint, qs) {
     const queryString = new URLSearchParams(qs);
     const url = `https://api.twitch.tv/helix/${endpoint}?${queryString}`;
@@ -67,25 +67,21 @@ function onMessageHandler (channel, tags, message, self) {
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
 
     if(emote != null) {
-        console.log(emote);
-        emoteStr = JSON.stringify(emote);
-        var buf = Buffer.from(JSON.stringify(emote));
-        var splitLoc = buf.indexOf(':');
-        var midLoc = splitLoc + 3;
-        var endLoc = buf.indexOf(']');
-        var dasLoc = buf.indexOf('-');
-        var emotenum = emoteStr.slice(2, splitLoc-1);
-        var startNum = emoteStr.slice(midLoc, dasLoc);
-        var endNum = emoteStr.slice(dasLoc+1, endLoc-1)
-        endNum = parseInt(endNum, 10) +1;
-        const emoturl = `<img class="profImg" src="https://static-cdn.jtvnw.net/emoticons/v1/${emotenum}/1.0" alt="${emotenum}" id="itemImg">`;
-        console.log(startNum);
-        console.log(endNum);
-        console.log(emotenum);
-        console.log(midLoc);
-        splice(startNum, endNum, emoturl, message);
-        console.log(messageOut);
-        var message1 = messageOut;
+        var message1
+        Object.keys(emote).forEach(function(key){
+            console.log(key, emote[key] );
+            var emoteUrl = `<img class="profImg" src="https://static-cdn.jtvnw.net/emoticons/v1/${key}/1.0" alt="${key}" id="${key}">`;
+            var placement = JSON.stringify(emote[key])
+            console.log(placement.indexOf('-'))
+            var dashLoc = placement.indexOf('-')
+            var furstnum = placement.slice(2, dashLoc )
+            console.log( furstnum)
+            var secondnum = placement.slice(dashLoc+1, placement.length-2)
+            console.log(secondnum)
+            var rmWord = message.slice(furstnum, secondnum)
+            message1 = message.replace(rmWord, emoteUrl )
+            console.log(message1);
+            });
     }
     else {
         console.log('i think we messed up if theres an emote');
