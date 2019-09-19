@@ -39,7 +39,9 @@
             socket.on('twitch', function(msg) {
                 $('#messages').append($('<li>').html(msg).attr('id', messageId).delay(timeout).fadeOut(100));
             })
-
+            socket.on('cheer', function(msg){
+                $('#messages').append($('<li>').html(msg).attr('id', messageid).delay(timeout).fadeOut(100));
+            })
             // append text if someone is online
             socket.on('is_online', function(username) {
                 $('#messages').append($('<li>').html(username));
