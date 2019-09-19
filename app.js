@@ -108,7 +108,7 @@ function onMessageHandler (channel, tags, message, self) {
             const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
             console.log(`${name} -- ${props}`);
             const profileElment = `<img class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
-            io.emit('twitch', `${ profileElment} ${displayName}: <br> ${message1}`);
+            io.emit('twitch', `${ profileElment}<p>${displayName}:</p>  <p>${message1}</p>`);
         }
     });
 };
