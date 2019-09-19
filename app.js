@@ -68,7 +68,9 @@ function onMessageHandler (channel, tags, message, self) {
 
     if(emote != null) {
         console.log(emote);
-        console.log(emote[0]);
+        var midLoc = emote.indexOf(':');
+        console.log(midLoc);
+
     }
     else {
         console.log('i think we messed up if theres an emote');
