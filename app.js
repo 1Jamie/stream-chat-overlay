@@ -27,7 +27,7 @@ function splice(start, end, insert, message){
     startStr = message.slice(0, start);
     console.log(startStr);
     console.log(end)
-    endStr =  message.slice(end+1);
+    endStr =  message.slice(end);
     messageOut = startStr + insert + endStr
 }
 
@@ -77,7 +77,7 @@ function onMessageHandler (channel, tags, message, self) {
         var emotenum = emoteStr.slice(2, splitLoc-1);
         var startNum = emoteStr.slice(midLoc, dasLoc);
         var endNum = emoteStr.slice(dasLoc+1, endLoc-1)
-        var msgLen = emoteStr.length;
+        endNum = endNum+1;
         const emoturl = `<img class="profImg" src="https://static-cdn.jtvnw.net/emoticons/v1/${emotenum}/1.0" alt="${emotenum}" id="itemImg">`;
         console.log(startNum);
         console.log(endNum);
