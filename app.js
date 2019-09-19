@@ -7,6 +7,7 @@ const tmi = require('tmi.js');
 const fetch = require('node-fetch');
 const { EmoteFetcher, EmoteParser } = require('twitch-emoticons');
 const fetcher = new EmoteFetcher();
+require('./info.js')
 const parser = new EmoteParser(fetcher, {
     type: 'markdown',
     match: /:(.+?):/g
@@ -38,7 +39,7 @@ app.get('/', function(req, res) {
 var config = {
     identity: {
         username: "charja113",
-        password: "oauth:fzr7ox5bh74qagnt6aitux9ehpia5w",
+        password: oath,
     },
     channels: [
         'charja113'
