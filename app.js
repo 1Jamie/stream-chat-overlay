@@ -72,7 +72,7 @@ function onMessageHandler (channel, tags, message, self) {
         console.log('i think we messed up if theres an emote');
     };
     console.log('twitch', `${displayName} : ${message}`);
-    console.log(tags);
+    //console.log(tags);
     getUser(userID)
         .then(user => {
         if(!user) {
