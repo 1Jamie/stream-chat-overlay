@@ -28,7 +28,12 @@ const pool = new Pool({
 const getCheerUrl = function(cheerW){
     pool.query(`select cheer, url from cheers`).then( res => {
         const result = res.rows
-        console.log(result)
+        console.log(result[0] ,  result[1])
+        Object.entries(result).forEach(([key, value]) => {
+            console.log(key, value)
+        }
+        
+        )
     })
 }
 getCheerUrl('Cheer1')
@@ -87,7 +92,7 @@ function onCheer(channel, userstate, message){
         cheersJson = res.rows
         console.log(result)
     })
-    Object.keys(cheersJson).forEach(function(key){
+    cheersJson.forEach(function(key){
         console.log(key);
         if(message.indexOf(key) != -1){
             cheermessage = message.replace(key, key[1]);
