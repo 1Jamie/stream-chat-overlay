@@ -31,7 +31,7 @@ const getCheerUrl = function(cheerW){
         console.log(result)
     })
 }
-getCheerUrl(Cheer1)
+getCheerUrl('Cheer1')
 
  
 //this is the function for making the helix calls as you can see
