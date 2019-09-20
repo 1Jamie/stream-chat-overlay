@@ -25,11 +25,13 @@ const pool = new Pool({
     port: 5432,
   });
 
-
-    pool.query(`select * from cheers order by id asc`).then( res => {
+const getCheerUrl = function(cheerW){
+    pool.query(`select url from cheers where cheer = ${cheerW} `).then( res => {
         const result = res.rows
         console.log(result)
     })
+}
+getCheerUrl(Cheer1)
 
  
 //this is the function for making the helix calls as you can see
