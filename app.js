@@ -26,7 +26,7 @@ const pool = new Pool({
   });
 
 const getCheerUrl = function(cheerW){
-    pool.query(`select url from cheers where cheer='${cheerW}' `).then( res => {
+    pool.query(`select * from cheers`).then( res => {
         const result = res.rows
         console.log(result)
     })
