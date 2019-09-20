@@ -30,14 +30,23 @@ const getCheerUrl = function(cheerW, usr){
     pool.query(`select cheer, url from cheers`).then( res => {
         const result = res.rows
         var message1
+        var inDB 
         Object.entries(result).forEach(([key, value]) => {
             console.log('testout:', key, value.cheer);
             indexVal = cheerW.indexOf(value.cheer);
             if(cheerW.indexOf(indexVal != -1)) {
-                message1 = cheerW.replace(value.cheer, value.url);
+                message1 = cheerW.replace(value.cheer, `<img class="emoteImg" src="${value.url}" alt="${value.cheer}" id="${value.cheer}">`);
                 console.log(message1);
                 io.emit('cheer', message1)
+                return;
             }
+            else{
+                inDB = false
+            }
+        if (inDb === false) {
+            io.emit(`cheer`, cheerW);
+            console.log('cheer was made with no entry in DB', cheerw);
+        }
         }
         
         )
@@ -92,7 +101,7 @@ var config = {
 function onCheer(channel, userstate, message){
     console.log(userstate);
     console.log('message: ' + message);
-    getCheerUrl(message)
+    getCheerUrl(message, userstate);
 
 }
 
