@@ -26,7 +26,7 @@ const pool = new Pool({
   });
 
 const getCheerUrl = function(cheerW){
-    pool.query(`select cheer url from cheers`).then( res => {
+    pool.query(`select cheer, url from cheers`).then( res => {
         const result = res.rows
         console.log(result)
     })
