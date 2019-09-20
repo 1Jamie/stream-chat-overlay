@@ -31,6 +31,7 @@ const getCheerUrl = function(cheerW, usr){
         const result = res.rows
         var message1
         var inDB 
+        var done
         Object.entries(result).forEach(([key, value]) => {
             console.log('testout:', key, value.cheer);
             indexVal = cheerW.indexOf(value.cheer);
@@ -38,16 +39,17 @@ const getCheerUrl = function(cheerW, usr){
                 message1 = cheerW.replace(value.cheer, `<img class="emoteImg" src="${value.url}" alt="${value.cheer}" id="${value.cheer}">`);
                 console.log(message1);
                 return;
+                done = 1 
             }
             else{
                 inDB = false
             }
         })
-        if (inDb === false) {
+        if (done != 1) {
             io.emit(`cheer`, cheerW);
             console.log('cheer was made with no entry in DB', cheerw);
         }
-        else {
+        else if(done === 1 ) {
             io.emit('cheer', message1)
         }
     })
