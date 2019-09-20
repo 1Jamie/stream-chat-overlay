@@ -1,7 +1,8 @@
-.messageImg{
-    float: left; 
-    height: 32px
-}
-.messageTxt{
-    float: left;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font: 19px Helvetica, Arial; }
+form { padding: 3px; position: fixed; bottom: 0; width: 100%; border-color: #000; border-top-style: solid; border-top-width: 1px;}
+form input { border-style: solid; border-width: 1px; padding: 10px; width: 85%; margin-right: .5%; }
+.emoteImg { width: 21px}
+.profImg { width: 50px; vertical-align: text-top;}
+#messages { list-style-type: none; margin: 0; padding: 0; }
+#messages li { border-bottom-color: blueviolet; border-bottom-width: 4px; width: 16%; padding: 5px 10px; background-color: aqua }
