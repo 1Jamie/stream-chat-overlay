@@ -1,4 +1,5 @@
 const express = require('express');
+const Pool = require('pg').Pool
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
@@ -7,7 +8,7 @@ const tmi = require('tmi.js');
 const fetch = require('node-fetch');
 const { EmoteFetcher, EmoteParser } = require('twitch-emoticons');
 const fetcher = new EmoteFetcher();
-info = require('./info.js')
+info = require('./info.js')\
 const parser = new EmoteParser(fetcher, {
     type: 'markdown',
     match: /:(.+?):/g
@@ -15,6 +16,25 @@ const parser = new EmoteParser(fetcher, {
 const headers = {
     'Client-ID': info.key
 };
+
+const pool = new Pool({
+    user: 'root',
+    host: 'localhost',
+    database: 'emotes',
+    password: 'password',
+    port: 5432,
+  });
+
+const getCheers = (request,response) => {
+    pool.quert(`select * from users order by id asc`, (erro, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(result.rows);
+        console.log(results);
+    })
+}
+ 
 //this is the function for making the helix calls as you can see
 function helix(endpoint, qs) {
     const queryString = new URLSearchParams(qs);
@@ -22,6 +42,7 @@ function helix(endpoint, qs) {
     return fetch(url, { headers })
     .then(res => res.json())
 }
+
 
 function splice(start, end, insert, message){
     startStr = message.slice(0, start);
@@ -61,6 +82,7 @@ function onCheer(channel, userstate, message){
     console.log(userstate);
     console.log('message: ' + message);
     io.emit('cheer', message);
+
 }
 
 function onConnectedHandler (addr, port) {
