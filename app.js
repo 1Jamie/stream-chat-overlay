@@ -37,7 +37,6 @@ const getCheerUrl = function(cheerW, usr){
             if(cheerW.indexOf(indexVal != -1)) {
                 message1 = cheerW.replace(value.cheer, `<img class="emoteImg" src="${value.url}" alt="${value.cheer}" id="${value.cheer}">`);
                 console.log(message1);
-                io.emit('cheer', message1)
                 return;
             }
             else{
@@ -47,6 +46,9 @@ const getCheerUrl = function(cheerW, usr){
         if (inDb === false) {
             io.emit(`cheer`, cheerW);
             console.log('cheer was made with no entry in DB', cheerw);
+        }
+        else {
+            io.emit('cheer', message1)
         }
     })
 }
