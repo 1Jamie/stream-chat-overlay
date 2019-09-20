@@ -119,6 +119,10 @@ function onMessageHandler (channel, tags, message, self) {
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
     console.log(emote);
     var commandName = message.trim();
+    if ( (username == 'StreamElements') || (username == 'PretzelRocks') ) {
+        console.log(`botmessage`)
+        return
+    }
 
     if(commandName === '!project'){
         client.say(channel, `the project page is https://gitlab.streamchatoverlay.xyz/jamie/streamchatoverlay`);
