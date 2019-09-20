@@ -43,13 +43,11 @@ const getCheerUrl = function(cheerW, usr){
             else{
                 inDB = false
             }
+        })
         if (inDb === false) {
             io.emit(`cheer`, cheerW);
             console.log('cheer was made with no entry in DB', cheerw);
         }
-        }
-        
-        )
     })
 }
 
