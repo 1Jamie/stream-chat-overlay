@@ -34,6 +34,7 @@
             });
             socket.on('twitch', function(msg) {
                 $('#messages').append($('<li>').html(msg).delay(timeout).fadeOut(100));
+                $('#messages').append($('</br>').delay(timeout).fadeOut(100)); 
             })
             socket.on('cheer', function(msg){
               console.log(msg);
