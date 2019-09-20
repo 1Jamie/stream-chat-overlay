@@ -29,11 +29,13 @@ const pool = new Pool({
 const getCheerUrl = function(cheerW){
     pool.query(`select cheer, url from cheers`).then( res => {
         const result = res.rows
+        var message1
         Object.entries(result).forEach(([key, value]) => {
             console.log('testout:', key, value.cheer);
             indexVal = cheerW.indexOf(value.cheer);
             if(cheerW.indexOf(indexVal != -1)) {
-                cheerW.replace(value.cheer, value.url)
+                message1 = cheerW.replace(value.cheer, value.url)
+                console.log(message1)
             }
         }
         
