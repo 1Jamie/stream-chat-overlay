@@ -26,7 +26,7 @@ const pool = new Pool({
   });
 
 const getCheers = (request,response) => {
-    pool.query(`select * from cheers order by id asc`, (erro, results) => {
+    pool.query(`select * from cheers order by id asc`, (error, results) => {
         if (error) {
             throw error
         }
@@ -35,7 +35,12 @@ const getCheers = (request,response) => {
     })
 }
 
-console.log(pool.query('select * from cheers order by id asc'));
+console.log(pool.query('select * from cheers order by id asc', (error, results) => {
+    if (error) {
+        throw error
+    }
+    response.status(200).json(results.row);
+} ));
  
 //this is the function for making the helix calls as you can see
 function helix(endpoint, qs) {
