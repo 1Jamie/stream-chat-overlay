@@ -31,6 +31,9 @@ const getCheerUrl = function(cheerW){
         const result = res.rows
         Object.entries(result).forEach(([key, value]) => {
             console.log(key, value.cheer);
+            if(cheerW.indexOf(value.cheer != -1)) {
+                cheerW.replace(value.cheer, value.url)
+            }
         }
         
         )
@@ -85,7 +88,7 @@ var config = {
 function onCheer(channel, userstate, message){
     console.log(userstate);
     console.log('message: ' + message);
-
+/*
     var cheermessage
     var cheersJson
     pool.query(`select * from cheers`).then( res => {
@@ -97,7 +100,7 @@ function onCheer(channel, userstate, message){
         if(message.indexOf(key) != -1){
             cheermessage = message.replace(key, key[1]);
         }
-    })
+    }) */
     io.emit(`cheer`, cheermessage);
 
 }
