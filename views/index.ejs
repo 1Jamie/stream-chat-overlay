@@ -37,8 +37,7 @@
                 $('#messages').append($('<li>').html(username));
             });
             // ask username
-            var username = prompt('Please tell me your name');
-            socket.emit('username', username);
+            socket.emit('username', `someone`);
     </script>
   </body>
 </html>
