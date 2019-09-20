@@ -80,7 +80,20 @@ var config = {
 function onCheer(channel, userstate, message){
     console.log(userstate);
     console.log('message: ' + message);
-    io.emit('cheer', message);
+
+    var cheermessage
+    var cheersJson
+    pool.query(`select * from cheers`).then( res => {
+        cheersJson = res.rows
+        console.log(result)
+    })
+    Object.keys(cheersJson).forEach(function(key){
+        console.log(key);
+        if(message.indexOf(key) != -1){
+            cheermessage = message.replace(key, key[1]);
+        }
+    })
+    io.emit(`cheer`, cheermessage);
 
 }
 
