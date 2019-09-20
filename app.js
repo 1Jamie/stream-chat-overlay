@@ -31,8 +31,8 @@ const getCheerUrl = function(cheerW){
         const result = res.rows
         Object.entries(result).forEach(([key, value]) => {
             console.log('testout:', key, value.cheer);
-            console.log('index', cheerW.indexOf(value.cheer));
-            if(cheerW.indexOf(value.cheer != -1)) {
+            indexVal = cheerW.indexOf(value.cheer);
+            if(cheerW.indexOf(indexVal != -1)) {
                 cheerW.replace(value.cheer, value.url)
             }
         }
