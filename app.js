@@ -1,4 +1,5 @@
 const express = require('express');
+const app = express();
 const Pool = require('pg').Pool
 const app = express();
 const http = require('http').Server(app);
@@ -8,6 +9,7 @@ const tmi = require('tmi.js');
 const fetch = require('node-fetch');
 const { EmoteFetcher, EmoteParser } = require('twitch-emoticons');
 const fetcher = new EmoteFetcher();
+app.use("/css",express.static(__dirname + "/css"));
 info = require('./info.js');
 const parser = new EmoteParser(fetcher, {
     type: 'markdown',
