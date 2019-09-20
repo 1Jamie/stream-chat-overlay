@@ -38,8 +38,8 @@ const getCheerUrl = function(cheerW, usr){
             if(cheerW.indexOf(indexVal != -1)) {
                 message1 = cheerW.replace(value.cheer, `<img class="emoteImg" src="${value.url}" alt="${value.cheer}" id="${value.cheer}">`);
                 console.log(message1);
-                return;
                 done = 1 
+                return done;
             }
             else{
                 inDB = false
