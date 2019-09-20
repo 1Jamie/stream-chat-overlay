@@ -182,7 +182,6 @@ io.sockets.on('connection', function(socket) {
         );
     });
     socket.on('disconnect', function(username) {
-        io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
     })
 
     socket.on('chat_message', function(message) {
