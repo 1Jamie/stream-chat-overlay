@@ -26,7 +26,7 @@ const pool = new Pool({
     port: 5432,
   });
 
-const getCheerUrl = function(cheerW){
+const getCheerUrl = function(cheerW, usr){
     pool.query(`select cheer, url from cheers`).then( res => {
         const result = res.rows
         var message1
@@ -34,15 +34,16 @@ const getCheerUrl = function(cheerW){
             console.log('testout:', key, value.cheer);
             indexVal = cheerW.indexOf(value.cheer);
             if(cheerW.indexOf(indexVal != -1)) {
-                message1 = cheerW.replace(value.cheer, value.url)
-                console.log(message1)
+                message1 = cheerW.replace(value.cheer, value.url);
+                console.log(message1);
+                io.emit('cheer', message1)
             }
         }
         
         )
     })
 }
-getCheerUrl('Cheer1')
+
 
  
 //this is the function for making the helix calls as you can see
@@ -57,9 +58,9 @@ function helix(endpoint, qs) {
 function splice(start, end, insert, message){
     startStr = message.slice(0, start);
     console.log(startStr);
-    console.log(end)
+    console.log(end);
     endStr =  message.slice(end);
-    messageOut = startStr + insert + endStr
+    messageOut = startStr + insert + endStr;
 }
 
 function emoteParse(emoteInf, msg) {
@@ -91,20 +92,7 @@ var config = {
 function onCheer(channel, userstate, message){
     console.log(userstate);
     console.log('message: ' + message);
-/*
-    var cheermessage
-    var cheersJson
-    pool.query(`select * from cheers`).then( res => {
-        cheersJson = res.rows
-        console.log(result)
-    })
-    cheersJson.forEach(function(key){
-        console.log(key);
-        if(message.indexOf(key) != -1){
-            cheermessage = message.replace(key, key[1]);
-        }
-    }) */
-    io.emit(`cheer`, cheermessage);
+    getCheerUrl(message)
 
 }
 
