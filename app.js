@@ -71,6 +71,12 @@ function onMessageHandler (channel, tags, message, self) {
 
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
     console.log(emote);
+    var commandName = message.trim();
+
+    if(commandName === '!project'){
+        client.say(channel, `the project page is https://gitlab.streamchatoverlay.xyz/jamie/streamchatoverlay`);
+        console.log('project command seen, message should be sent');
+    }
     
     if(emote != null) {
         var message1 = message;
