@@ -30,27 +30,39 @@ const getCheerUrl = function(cheerW, usr){
     pool.query(`select cheer, url from cheers`).then( res => {
         const result = res.rows
         var message1
-        var inDB 
+        var inDb 
         var done
+        for ( x = 0; x < result.length; x++ ){
+            indexVal = cheerW.indexOf(value[x].cheer);
+            if(cheerW.indexOf(indexVal != -1)) {
+                window.message1 = cheerW.replace(value.cheer, `<img class="emoteImg" src="${value[x].url}" alt="${value[x].cheer}" id="${value[x].cheer}">`);
+                console.log(message1);
+                done = 1 ;
+                break
+            }
+            else{
+                inDb = false;
+                return inDb;
+            }
+            
+        } /*
         Object.entries(result).forEach(([key, value]) => {
             console.log('testout:', key, value.cheer);
             indexVal = cheerW.indexOf(value.cheer);
             if(cheerW.indexOf(indexVal != -1)) {
-                message1 = cheerW.replace(value.cheer, `<img class="emoteImg" src="${value.url}" alt="${value.cheer}" id="${value.cheer}">`);
+                window.message1 = cheerW.replace(value.cheer, `<img class="emoteImg" src="${value.url}" alt="${value.cheer}" id="${value.cheer}">`);
                 console.log(message1);
-                done = 1 
-                return done;
+                done = 1 ;
+                break
             }
             else{
-                inDB = false
+                inDb = false;
+                return inDb;
             }
-        })
+        }) */
         if (done != 1) {
             io.emit(`cheer`, cheerW);
             console.log('cheer was made with no entry in DB', cheerw);
-        }
-        else if(done === 1 ) {
-            io.emit('cheer', message1)
         }
     })
 }
