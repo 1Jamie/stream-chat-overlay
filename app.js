@@ -8,7 +8,7 @@ const tmi = require('tmi.js');
 const fetch = require('node-fetch');
 const { EmoteFetcher, EmoteParser } = require('twitch-emoticons');
 const fetcher = new EmoteFetcher();
-info = require('./info.js')\
+info = require('./info.js');
 const parser = new EmoteParser(fetcher, {
     type: 'markdown',
     match: /:(.+?):/g
