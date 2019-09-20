@@ -119,7 +119,7 @@ function onMessageHandler (channel, tags, message, self) {
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
     console.log(emote);
     var commandName = message.trim();
-    if ( (username == 'StreamElements') || (username == 'PretzelRocks') ) {
+    if ( (displayName == 'StreamElements') || (displayName == 'PretzelRocks') ) {
         console.log(`botmessage`)
         return
     }
