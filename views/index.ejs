@@ -18,9 +18,6 @@
   </head>
   <body>
     <ul id="messages"></ul>
-    <form action="/" method="POST" id="chatForm">
-      <input id="txt" autocomplete="off" autofocus="on" oninput="isTyping()" placeholder="i guess test it here!" /><button>Send</button>
-    </form>
     <script>
             var socket = io.connect('34.73.6.238:80');
             var messageId = 0;
