@@ -28,7 +28,6 @@ const pool = new Pool({
 const getCheerUrl = function(cheerW){
     pool.query(`select cheer, url from cheers`).then( res => {
         const result = res.rows
-        console.log(result[0] ,  result[1])
         Object.entries(result).forEach(([key, value]) => {
             console.log(key, value)
         }
