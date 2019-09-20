@@ -37,7 +37,7 @@ const getCheerUrl = function(cheerW, usr){
             console.log( `grab further`, result[x].cheer )
             indexVal = cheerW.indexOf(result[x].cheer);
             if(cheerW.indexOf(indexVal != -1)) {
-                window.message1 = cheerW.replace(value.cheer, `<img class="emoteImg" src="${value[x].url}" alt="${value[x].cheer}" id="${value[x].cheer}">`);
+                message1 = cheerW.replace(value[x].cheer, `<img class="emoteImg" src="${result[x].url}" alt="${result[x].cheer}" id="${result[x].cheer}">`);
                 console.log(message1);
                 done = 1 ;
                 break
@@ -45,26 +45,15 @@ const getCheerUrl = function(cheerW, usr){
             else{
                 inDb = false;
                 return inDb;
-            }
-            
-        } /*
-        Object.entries(result).forEach(([key, value]) => {
-            console.log('testout:', key, value.cheer);
-            indexVal = cheerW.indexOf(value.cheer);
-            if(cheerW.indexOf(indexVal != -1)) {
-                window.message1 = cheerW.replace(value.cheer, `<img class="emoteImg" src="${value.url}" alt="${value.cheer}" id="${value.cheer}">`);
-                console.log(message1);
-                done = 1 ;
-                break
-            }
-            else{
-                inDb = false;
-                return inDb;
-            }
-        }) */
+            }     
+        } 
         if (done != 1) {
             io.emit(`cheer`, cheerW);
             console.log('cheer was made with no entry in DB', cheerw);
+        }
+        else{
+            io.emit(`cheer`, message1);
+            console.log('message1');
         }
     })
 }
