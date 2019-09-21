@@ -163,7 +163,7 @@ function onMessageHandler (channel, tags, message, self) {
         var keyCount  = Object.keys(emote).length
         Object.keys(emote).forEach(function(key){
             console.log(key, emote[key] );
-            var emoteUrl = `<img class="emoteImg" src="https://static-cdn.jtvnw.net/emoticons/v1/${key}/1.0" alt="${key}" id="${key}">`;
+            var emoteUrl = `<img class="emoteImg" src="https://static-cdn.jtvnw.net/emoticons/v1/${key}/1.0">`;
             var placement = JSON.stringify(emote[key])
             console.log(placement.indexOf('-'))
             var dashLoc = placement.indexOf('-')
@@ -174,6 +174,10 @@ function onMessageHandler (channel, tags, message, self) {
             var rmWord = message.slice(furstnum, parseInt(secondnum)+1)
             console.log('rmwork: ' + rmWord)
             message1 = message1.replace(rmWord, emoteUrl )
+            while (message1.indexOf(rmWord) != -1 ) {
+                message1 = message1.replace(rmWord, emoteUrl )
+                console.log('there was more than one instance')
+            }
             console.log(message1);
             return message1
             });
