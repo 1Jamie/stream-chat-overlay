@@ -30,7 +30,8 @@ setTimeout(console.log(badgeJson), 2000)
 
 */
 const badge_icons = _.once(async () => (await fetch('https://badges.twitch.tv/v1/badges/global/display')).json());
-await badge_icons().then(console.log(badge_icons))
+await badge_icons();
+console.log(badge_icons)
 /*
 function getBadges(badgeitem) { return fetch('https://badges.twitch.tv/v1/badges/global/display')
 .then(function(res) {
