@@ -40,7 +40,9 @@ function getBadges() { return fetch('https://badges.twitch.tv/v1/badges/global/d
   });
 }
 
-getBadges()
+function selectBadge(name){
+   return badge_icons.name.version[1].image_urlx   
+}
 
 
 const pool = new Pool({
@@ -169,6 +171,7 @@ function onConnectedHandler (addr, port) {
 function onMessageHandler (channel, tags, message, self) {
     var message1
     // getBadges()
+    selectBadge(broadcaster);
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
     console.log(emote);
     var commandName = message.trim();
