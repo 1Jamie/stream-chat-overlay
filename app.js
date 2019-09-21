@@ -36,7 +36,6 @@ function getBadge(badge) { fetch('https://badges.twitch.tv/v1/badges/global/disp
         console.log(json.badge.version[1].image_url_1x)
     })
 }
-getBadge('broadcaster')
 
 
 
@@ -165,7 +164,7 @@ function onConnectedHandler (addr, port) {
 
 function onMessageHandler (channel, tags, message, self) {
     var message1
-
+    getBadge('broadcaster')
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
     console.log(emote);
     var commandName = message.trim();
