@@ -162,7 +162,7 @@ function onConnectedHandler (addr, port) {
 
 function onMessageHandler (channel, tags, message, self) {
     var message1
-    getBadges()
+    // getBadges()
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
     console.log(emote);
     var commandName = message.trim();
@@ -222,7 +222,9 @@ function onMessageHandler (channel, tags, message, self) {
             const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
             console.log(`${name} -- ${props}`);
             const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
-            io.emit('twitch', `${ profileElment}<p>${displayName}:</p>  <p>${message1}</p></br>`);
+            io.emit('twitch', `${ profileElment}<p>${displayName}:</p>  <p>${message1}</p></br>`).then(function(){
+                console.log('message sent to front end')
+            });
         }
     });
 };
