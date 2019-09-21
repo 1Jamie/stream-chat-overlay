@@ -67,11 +67,17 @@ const getCheerUrl = function(cheerW, usr){
                 console.log('User not found');
             }
             else {
-                const {profile_image_url} = user;
+                const {
+                    id, display_name, login,
+                    broadcaster_type, view_count, profile_image_url
+                } = user;
+                const name = `[${id}] ${display_name} (${login})`;
+                const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
+                console.log(`${name} -- ${props}`);
                 profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
             }
             });
-            message1=`${profileElment} ${message1}`
+            message1 = `${profileElment} ${message1}`
             console.log(`message content`, message1)
             io.emit(`cheer`, message1);
             console.log('message1');
