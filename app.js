@@ -5,6 +5,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 var path = require('path');
 const tmi = require('tmi.js');
+const once = require('lodash.once');
 const fetch = require('node-fetch');
 const { EmoteFetcher, EmoteParser } = require('twitch-emoticons');
 const fetcher = new EmoteFetcher();
@@ -28,21 +29,22 @@ var badgeJson = Jsonfetch('https://badges.twitch.tv/v1/badges/global/display')
 setTimeout(console.log(badgeJson), 2000)
 
 */
-var badge_icons
-
-function getBadges() { return fetch('https://badges.twitch.tv/v1/badges/global/display')
+const badge_icons = _.once(async () => (await fetch('https://badges.twitch.tv/v1/badges/global/display')).json());
+await badge_icons().then(console.log(badge_icons))
+/*
+function getBadges(badgeitem) { return fetch('https://badges.twitch.tv/v1/badges/global/display')
 .then(function(res) {
     return res.json();
   })
   .then(function(myJson) {
     badge_icons = myJson;
     //console.log(myJson);
-    console.log(`badges gotten`)
+    console.log(myJson.badgeitem.versions[1])
     return badge_icons
   });
 }
 getBadges()
-
+*/
 
 const pool = new Pool({
     user: 'root',
@@ -169,7 +171,7 @@ function onConnectedHandler (addr, port) {
 
 function onMessageHandler (channel, tags, message, self) {
     var message1
-    console.log(badge_icons.broadcaster.versions[1].image_url_1x)
+
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
     console.log(emote);
     var commandName = message.trim();
