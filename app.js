@@ -30,16 +30,16 @@ setTimeout(console.log(badgeJson), 2000)
 */
 var badge_icons
 
-function getBadges() { fetch('https://badges.twitch.tv/v1/badges/global/display')
-    .then(res => res.json())
-    .then(json => 
-    function(json){
-        badge_icons = JSON.stringify(json)
-        console.log(badge_icons);
-    })     
+function getBadges() { return fetch('https://badges.twitch.tv/v1/badges/global/display')
+.then(function(res) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    badge_icons = myJson;
+    console.log(myJson);
+  });
 }
 
-getBadges()
 
 
 const pool = new Pool({
