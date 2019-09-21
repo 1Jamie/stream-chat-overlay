@@ -30,17 +30,17 @@ setTimeout(console.log(badgeJson), 2000)
 */
 var badge_icons
 
-function getBadges(name) { return fetch('https://badges.twitch.tv/v1/badges/global/display')
+function getBadges() { return fetch('https://badges.twitch.tv/v1/badges/global/display')
 .then(function(res) {
     return res.json();
   })
   .then(function(myJson) {
     badge_icons = myJson;
-    console.log(JSON.parse(`${myJson}.${name}.version[1].image_url_1x`));
-    return JSON.parse(`${myJson}.${name}.version[1].image_url_1x`)
+    //console.log(myJson);
+    console.log(`badges gotten`)
   });
 }
-
+getBadges()
 
 
 const pool = new Pool({
@@ -168,7 +168,7 @@ function onConnectedHandler (addr, port) {
 
 function onMessageHandler (channel, tags, message, self) {
     var message1
-    var badge = getBadges('broadcaster')
+    console.log(badge_icons.broadcaster.versions[1].image_url_1x)
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
     console.log(emote);
     var commandName = message.trim();
