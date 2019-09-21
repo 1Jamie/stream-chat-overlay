@@ -17,6 +17,8 @@ const parser = new EmoteParser(fetcher, {
 const headers = {
     'Client-ID': info.key
 };
+
+/* non working
 function Jsonfetch(url) {
 return fetch(url, { headers })
 .then(res => res.json())
@@ -25,6 +27,7 @@ var badgeJson = Jsonfetch('https://badges.twitch.tv/v1/badges/global/display')
 
 setTimeout(console.log(badgeJson), 2000)
 
+*/
 
 const pool = new Pool({
     user: 'root',
