@@ -9,22 +9,9 @@
   <body>
     <ul id="messages"></ul>
     <script>
-            // lets go ahead and set vars for channls
-            let channel=prompt('Channel Name')
-            let chans=[phantomofnyx, charja113];
-            // from there lets see if they are a integrated part of the application
-            if(chans.indexOf(channel) != -1){
-              $('head').append(`<link rel="stylesheet" type="text/css" href="/css/${channel}.css">`);
-            }
-            // if not lets go ahead and set their css as the base one
-            else{
-              $('head').append(`<link rel="stylesheet" type="text/css" href="/css/base.css">`);
-              }
             var socket = io.connect('34.73.6.238:80');
             var messageId = 0;
             var timeout = 14000
-            //lets emit to the backend that we have a channel here and see if we need to connect to it
-            socket.emit('channel', chanel)
             // submit text message without reload/refresh the page
             $('form').submit(function(e){
                 e.preventDefault(); // prevents page reloading
@@ -37,10 +24,9 @@
                 $('#messages').append($('<li>').html(msg).delay(timeout).fadeOut(100));
             });
             socket.on('twitch', function(msg) {
-              if(msg.chan == channel){
-                $('#messages').append($('<li>').html(msg.message).delay(timeout).fadeOut(100));
+                $('#messages').append($('<li>').html(msg).delay(timeout).fadeOut(100));
                 $('#messages').append($('</br>').delay(timeout).fadeOut(100)); 
-            }})
+            })
             socket.on('cheer', function(msg){
               console.log(msg);
                 $('#messages').append($('<li>').html(msg).delay(timeout).fadeOut(100));
