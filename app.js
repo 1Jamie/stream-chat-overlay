@@ -39,7 +39,7 @@ function getBadges() { fetch('https://badges.twitch.tv/v1/badges/global/display'
         })     
 }
 
-getbadges()
+getBadges()
 
 
 const pool = new Pool({
