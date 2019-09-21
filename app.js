@@ -45,7 +45,7 @@ const getCheerUrl = function(cheerW, usr){
                     message1 = message1.replace(result[x].cheer, `<img class="emoteImg" src="${result[x].url}">`);
                     console.log(message1);
                     message1 = `${usr.username} : ${message1}` 
-                    console.log(result[user-id] );
+                    console.log(result["user-id"] );
                     done = 1; 
                 }
                 break
