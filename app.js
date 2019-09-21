@@ -38,6 +38,7 @@ function getBadges() { return fetch('https://badges.twitch.tv/v1/badges/global/d
     badge_icons = myJson;
     //console.log(myJson);
     console.log(`badges gotten`)
+    return badge_icons
   });
 }
 getBadges()
