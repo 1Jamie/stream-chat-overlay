@@ -32,6 +32,7 @@ const getCheerUrl = function(cheerW, usr){
         var message1
         var inDb 
         var done
+        var profileElment
         console.log('there was a cheer')
         for ( x = 0; x < result.length; x++ ){
             console.log( `just the object`, result[x]);
