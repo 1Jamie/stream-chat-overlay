@@ -32,6 +32,7 @@ const getCheerUrl = function(cheerW, usr){
         var message1
         var inDb 
         var done
+        console.log('there was a cheer')
         for ( x = 0; x < result.length; x++ ){
             console.log( `just the object`, result[x]);
             console.log( `grab further`, result[x].cheer )
@@ -43,6 +44,7 @@ const getCheerUrl = function(cheerW, usr){
                 break
             }
             else{
+                console.log('no db entry')
                 inDb = false;
                 return inDb;
             }     
