@@ -29,12 +29,15 @@ setTimeout(console.log(badgeJson), 2000)
 
 */
 
-var badgeJson = fetch('https://badges.twitch.tv/v1/badges/global/display')
+function badgeJson(url) {fetch(url)
     .then(res => res.json())
     .then(json => function(){return json}
     );
+}
 
-setTimeout(console.log(badgeJson), 2000)
+var jsonB = badgeJson('https://badges.twitch.tv/v1/badges/global/display')
+
+setTimeout(console.log(jsonB), 2000)
 
 const pool = new Pool({
     user: 'root',
