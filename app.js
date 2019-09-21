@@ -31,8 +31,6 @@ app.get('/buses/location', async (req, res) => {
     }
   })
 
-
-console.log(badgeJson)
 const pool = new Pool({
     user: 'root',
     host: 'localhost',
