@@ -32,7 +32,7 @@ var badge_icons
 
 function getBadges() { fetch('https://badges.twitch.tv/v1/badges/global/display')
     .then(res => res.json())
-    .then(json => console.log(json),
+    .then(json => 
     function(json){
         badge_icons = JSON.stringify(json)
         console.log(badge_icons);
