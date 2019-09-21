@@ -44,21 +44,11 @@ const getCheerUrl = function(cheerW, usr){
                 var profileElment
                 while (message1.indexOf(result[x].cheer) != -1  ) {
                     message1 = message1.replace(result[x].cheer, `<img class="emoteImg" src="${result[x].url}">`);
-                    getUser(usr["user-id"])
-                    .then(user => {
-                    if(!user) {
-                        console.log('User not found');
-                    }
-                    else {
-                        const {profile_image_url} = user;
-                        profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
-                    }
-                    });
                     console.log(message1);
-                    message1 = `${profileElment} ${usr.username} : ${message1}` 
+                    message1 = `${usr.username} : ${message1}` 
                     console.log(usr["user-id"] );
-                    done = 1; 
                 }
+                done = 1; 
                 break
             }
             else{
@@ -67,14 +57,24 @@ const getCheerUrl = function(cheerW, usr){
             }     
         } 
         if (done != 1) {
-            getUserImg(usr["user-id"])
-            message1 = `${profileElment} ${cheerW}`
             io.emit(`cheer`, cheerW);
             console.log('cheer was made with no entry in DB', cheerw);
         }
         else{
+            getUser(usr["user-id"])
+            .then(user => {
+            if(!user) {
+                console.log('User not found');
+            }
+            else {
+                const {profile_image_url} = user;
+                profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
+            }
+            });
+            message1=`${profileElment} ${message1}`
             io.emit(`cheer`, message1);
             console.log('message1');
+
         }
     })
 }
