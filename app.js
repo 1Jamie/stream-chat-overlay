@@ -17,7 +17,7 @@ const parser = new EmoteParser(fetcher, {
 const headers = {
     'Client-ID': info.key
 };
-function Jsonfetch(Url) {
+function Jsonfetch(url) {
 return fetch(url, { headers })
 .then(res => res.json())
 }
