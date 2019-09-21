@@ -43,7 +43,7 @@ const getCheerUrl = function(cheerW, usr){
                 message1 = cheerW 
                 while (message1.indexOf(result[x].cheer) != -1  ) {
                     message1 = message1.replace(result[x].cheer, `<img class="emoteImg" src="${result[x].url}">`);
-                    getUser(userID)
+                    getUser(usr["user-id"])
                     .then(user => {
                     if(!user) {
                         console.log('User not found');
