@@ -41,6 +41,7 @@ const getCheerUrl = function(cheerW, usr){
             console.log(indexVal);
             if( indexVal != -1 ) {
                 message1 = cheerW 
+                var profileElment
                 while (message1.indexOf(result[x].cheer) != -1  ) {
                     message1 = message1.replace(result[x].cheer, `<img class="emoteImg" src="${result[x].url}">`);
                     getUser(usr["user-id"])
@@ -50,7 +51,7 @@ const getCheerUrl = function(cheerW, usr){
                     }
                     else {
                         const {profile_image_url} = user;
-                        const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
+                        profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
                     }
                     });
                     console.log(message1);
