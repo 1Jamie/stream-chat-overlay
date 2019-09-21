@@ -37,6 +37,7 @@ const getCheerUrl = function(cheerW, usr){
             console.log( `just the object`, result[x]);
             console.log( `grab further`, result[x].cheer )
             indexVal = cheerW.indexOf(result[x].cheer);
+            console.log('userstate', usr)
             console.log(indexVal);
             if( indexVal != -1 ) {
                 message1 = cheerW 
