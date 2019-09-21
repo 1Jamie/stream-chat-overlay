@@ -29,13 +29,16 @@ setTimeout(console.log(badgeJson), 2000)
 
 */
 
-function badgeJson(url) { fetch(url)
+function getBadge(badge) { fetch('https://badges.twitch.tv/v1/badges/global/display')
     .then(res => res.json())
+    .then(json => function(json){
+        console.log(json);
+        console.log(json.badge.version[1].image_url_1x)
+    })
 }
+getBadge('broadcaster')
 
-var jsonB = badgeJson('https://badges.twitch.tv/v1/badges/global/display')
 
-console.log(jsonB)
 
 const pool = new Pool({
     user: 'root',
@@ -162,7 +165,6 @@ function onConnectedHandler (addr, port) {
 
 function onMessageHandler (channel, tags, message, self) {
     var message1
-    badgeJson('https://badges.twitch.tv/v1/badges/global/display').then(res => console.log(res))
 
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
     console.log(emote);
