@@ -155,7 +155,7 @@ function onMessageHandler (channel, tags, message, self) {
     }
 
     console.log('twitch', `${displayName} : ${message1}`);
-    //console.log(tags);
+    console.log(tags);
     getUser(userID)
         .then(user => {
         if(!user) {
