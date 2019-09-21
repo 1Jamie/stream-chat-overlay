@@ -30,8 +30,7 @@ setTimeout(console.log(badgeJson), 2000)
 
 */
 const badge_icons = _.once(async () => (await fetch('https://badges.twitch.tv/v1/badges/global/display')).json());
-await badge_icons();
-console.log(badge_icons)
+
 /*
 function getBadges(badgeitem) { return fetch('https://badges.twitch.tv/v1/badges/global/display')
 .then(function(res) {
@@ -233,6 +232,8 @@ function onMessageHandler (channel, tags, message, self) {
             console.log(`${name} -- ${props}`);
             const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
             io.emit('twitch', `${ profileElment}<p>${displayName}:</p>  <p>${message1}</p></br>`)
+            await badge_icons();
+            console.log(badge_icons)
         }
     });
 };
