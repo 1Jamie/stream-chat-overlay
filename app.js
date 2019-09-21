@@ -72,6 +72,7 @@ const getCheerUrl = function(cheerW, usr){
             }
             });
             message1=`${profileElment} ${message1}`
+            console.log(`message content`, message1)
             io.emit(`cheer`, message1);
             console.log('message1');
 
