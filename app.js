@@ -39,9 +39,12 @@ const getCheerUrl = function(cheerW, usr){
             indexVal = cheerW.indexOf(result[x].cheer);
             console.log(indexVal);
             if( indexVal != -1 ) {
-                message1 = cheerW.replace(result[x].cheer, `<img class="emoteImg" src="${result[x].url}" alt="${result[x].cheer}" id="${result[x].cheer}">`);
-                console.log(message1);
-                done = 1 ;
+                message1 = cheerW 
+                while (message1.indexOf(result[x].cheer) != -1  ) {
+                    message1 = message1.replace(result[x].cheer, `<img class="emoteImg" src="${result[x].url}" alt="${result[x].cheer}" id="${result[x].cheer}">`);
+                    console.log(message1);
+                    done = 1; 
+                }
                 break
             }
             else{
@@ -117,6 +120,7 @@ function onConnectedHandler (addr, port) {
 };
 
 function onMessageHandler (channel, tags, message, self) {
+    var message1
 
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
     console.log(emote);
@@ -130,9 +134,10 @@ function onMessageHandler (channel, tags, message, self) {
         client.say(channel, `the project page is https://gitlab.streamchatoverlay.xyz/jamie/streamchatoverlay`);
         console.log('project command seen, message should be sent');
     }
-    
+
+
     if(emote != null) {
-        var message1 = message;
+        message1 = message;
         var keyCount  = Object.keys(emote).length
         Object.keys(emote).forEach(function(key){
             console.log(key, emote[key] );
@@ -153,7 +158,7 @@ function onMessageHandler (channel, tags, message, self) {
     }
     else {
         console.log('i think we messed up if theres an emote');
-        var message1 = message;
+        message1 = message;
     }
 
     console.log('twitch', `${displayName} : ${message1}`);
