@@ -32,7 +32,6 @@ const getCheerUrl = function(cheerW, usr){
         var message1
         var inDb 
         var done
-        var profileElment
         console.log('there was a cheer')
         for ( x = 0; x < result.length; x++ ){
             console.log( `just the object`, result[x]);
@@ -75,13 +74,13 @@ const getCheerUrl = function(cheerW, usr){
                 const name = `[${id}] ${display_name} (${login})`;
                 const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
                 console.log(`${name} -- ${props}`);
-                profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
+                const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
+                message1 = `${profileElment} ${message1}`
+                console.log(`message content`, message1)
+                io.emit(`cheer`, message1);
             }
             });
-            message1 = `${profileElment} ${message1}`
-            console.log(`message content`, message1)
-            io.emit(`cheer`, message1);
-            console.log('message1');
+
 
         }
     })
