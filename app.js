@@ -17,19 +17,14 @@ const parser = new EmoteParser(fetcher, {
 const headers = {
     'Client-ID': info.key
 };
+function Jsonfetch(Url) {
+return fetch(url, { headers })
+.then(res => res.json())
+}
+var badgeJson = Jsonfetch('https://badges.twitch.tv/v1/badges/global/display')
 
-app.get('/buses/location', async (req, res) => {
-    try {
-         let requesturl = 'https://badges.twitch.tv/v1/badges/global/display'
-        const response = await fetch(requesturl, { headers: { 'Content-Type': 'application/json' }} );
-        const jsonResponse = await response.json();
-        console.log(jsonResponse)
-        return jsonResponse
-    }
-    catch (e){
-        console.log(e);
-    }
-  })
+setTimeout(console.log(badgeJson), 2000)
+
 
 const pool = new Pool({
     user: 'root',
