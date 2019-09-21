@@ -43,8 +43,9 @@ const getCheerUrl = function(cheerW, usr){
                 message1 = cheerW 
                 while (message1.indexOf(result[x].cheer) != -1  ) {
                     message1 = message1.replace(result[x].cheer, `<img class="emoteImg" src="${result[x].url}">`);
+                    getUserImg(usr["user-id"])
                     console.log(message1);
-                    message1 = `${usr.username} : ${message1}` 
+                    message1 = `${profileElment} ${usr.username} : ${message1}` 
                     console.log(usr["user-id"] );
                     done = 1; 
                 }
@@ -56,6 +57,8 @@ const getCheerUrl = function(cheerW, usr){
             }     
         } 
         if (done != 1) {
+            getUserImg(usr["user-id"])
+            message1 = `${profileElment} ${cheerW}`
             io.emit(`cheer`, cheerW);
             console.log('cheer was made with no entry in DB', cheerw);
         }
@@ -93,6 +96,22 @@ function getUser(id) {
     return helix('users', { id })
     .then(({ data: [ user ] }) => user || null);
 }
+function getUserImg(userID)
+        getUser(userID).then(user => {
+        if(!user) {
+            console.log('User not found');
+        }
+        else {
+            const {
+                id, display_name, login,
+                broadcaster_type, view_count, profile_image_url
+            } = user;
+            const name = `[${id}] ${display_name} (${login})`;
+            const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
+            console.log(`${name} -- ${props}`);
+            profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
+        }
+    });
 
 
 
