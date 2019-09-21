@@ -31,9 +31,8 @@ setTimeout(console.log(badgeJson), 2000)
 
 function getBadges() { fetch('https://badges.twitch.tv/v1/badges/global/display')
     .then(res => res.json())
-    .then(json => function(){
-        console.log(json);
-    })
+    .then(json => 
+        console.log(json);    
 }
 
 
