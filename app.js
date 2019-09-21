@@ -18,17 +18,19 @@ const headers = {
     'Client-ID': info.key
 };
 
-app.get('/buses/location', async (req, res) => {
+var badgeJson = JSON.parse(app.get('/buses/location', async (req, res) => {
     try {
          let requesturl = 'https://badges.twitch.tv/v1/badges/global/display'
         const response = await fetch(requesturl, { headers: { 'Content-Type': 'application/json' }} );
         const jsonResponse = await response.json();
-        return jsonResponse
+        return
     }
     catch (e){
         console.log(e);
     }
   })
+)
+console.log(badgeJson)
 
 const pool = new Pool({
     user: 'root',
