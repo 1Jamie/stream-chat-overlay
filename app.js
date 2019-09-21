@@ -162,6 +162,7 @@ function onConnectedHandler (addr, port) {
 
 function onMessageHandler (channel, tags, message, self) {
     var message1
+    console(json);
 
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
     console.log(emote);
