@@ -162,7 +162,7 @@ function onConnectedHandler (addr, port) {
 
 function onMessageHandler (channel, tags, message, self) {
     var message1
-    console.log(jsonB);
+    badgeJson('https://badges.twitch.tv/v1/badges/global/display').then(res => console.log(res))
 
     const { 'user-name': username, 'display-name': displayName, 'user-id': userID, 'subscriber': sub, 'emotes': emote } = tags;
     console.log(emote);
