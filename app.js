@@ -9,7 +9,8 @@ const fetch = require('node-fetch');
 const { EmoteFetcher, EmoteParser } = require('twitch-emoticons');
 const fetcher = new EmoteFetcher();
 app.use("/css",express.static(__dirname + "/css"));
-info = require('./info.js');
+let info = require('./info.js');
+let chans = [charja113]
 const parser = new EmoteParser(fetcher, {
     type: 'markdown',
     match: /:(.+?):/g
@@ -32,7 +33,7 @@ setTimeout(console.log(badgeJson), 2000)
 function getBadges() { fetch('https://badges.twitch.tv/v1/badges/global/display')
     .then(res => res.json())
     .then(json => 
-        console.log(json))     
+        console.log(json));     
 }
 
 
@@ -222,7 +223,8 @@ function onMessageHandler (channel, tags, message, self) {
             const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
             console.log(`${name} -- ${props}`);
             const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`
-            io.emit('twitch', `${ profileElment}<p>${displayName}:</p>  <p>${message1}</p></br>`);
+            var finalMessage =  `${ profileElment}<p>${displayName}:</p>  <p>${message1}</p></br>`
+            io.emit('twitch', `{message: ${finalMessage}, chan: ${channel}}`);
         }
     });
 };
@@ -238,6 +240,16 @@ client.connect();
 client.addListener('message', function(from, message) {
     console.log('message seen');
 });
+
+io.on('channel', function(channel){
+    if(chans.indexOf(channel) == -1){
+        client.join(channel);
+        console.log(`connected to ${channel}`)
+    }
+    else{
+        console.log(`we are alread connected to ${channel} not joining`)
+    }
+})
 
 io.sockets.on('connection', function(socket) {
     socket.on('username', function(username) {
