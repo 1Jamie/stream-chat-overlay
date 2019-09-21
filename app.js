@@ -37,7 +37,8 @@ const getCheerUrl = function(cheerW, usr){
             console.log( `just the object`, result[x]);
             console.log( `grab further`, result[x].cheer )
             indexVal = cheerW.indexOf(result[x].cheer);
-            if(cheerW.indexOf(indexVal != -1)) {
+            console.log(indexVal);
+            if( indexVal != -1 ) {
                 message1 = cheerW.replace(result[x].cheer, `<img class="emoteImg" src="${result[x].url}" alt="${result[x].cheer}" id="${result[x].cheer}">`);
                 console.log(message1);
                 done = 1 ;
@@ -46,7 +47,6 @@ const getCheerUrl = function(cheerW, usr){
             else{
                 console.log('no db entry')
                 inDb = false;
-                return inDb;
             }     
         } 
         if (done != 1) {
