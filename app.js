@@ -35,7 +35,7 @@ function badgeJson(url) { fetch(url)
 
 var jsonB = badgeJson('https://badges.twitch.tv/v1/badges/global/display')
 
-setTimeout(console.log(jsonB), 2000)
+console.log(jsonB)
 
 const pool = new Pool({
     user: 'root',
