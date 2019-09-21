@@ -41,7 +41,7 @@ const getCheerUrl = function(cheerW, usr){
             if( indexVal != -1 ) {
                 message1 = cheerW 
                 while (message1.indexOf(result[x].cheer) != -1  ) {
-                    message1 = message1.replace(result[x].cheer, `<img class="emoteImg" src="${result[x].url}" alt="${result[x].cheer}" id="${result[x].cheer}">`);
+                    message1 = message1.replace(result[x].cheer, `<img class="emoteImg" src="${result[x].url}">`);
                     console.log(message1);
                     done = 1; 
                 }
