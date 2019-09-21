@@ -1,0 +1,4 @@
+module.exports = {
+    oauth: ' Oauth Key here '
+    key: ' twitch developers application key '
+}
