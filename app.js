@@ -8,7 +8,6 @@ const tmi = require('tmi.js');
 const once = require('lodash.once');
 const fetch = require('node-fetch');
 
-const fetcher = new EmoteFetcher();
 app.use('/css', express.static(`${__dirname}/css`));
 const info = require('./info.js');
 
