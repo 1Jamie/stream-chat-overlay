@@ -15,7 +15,7 @@ const headers = {
   'Client-ID': info.key,
 };
 
-const badge_icons = _.once(async () => (await fetch('https://badges.twitch.tv/v1/badges/global/display')).json());
+// const badge_icons = _.once(async () => (await fetch('https://badges.twitch.tv/v1/badges/global/display')).json());
 
 const pool = new Pool({
   user: 'root',
