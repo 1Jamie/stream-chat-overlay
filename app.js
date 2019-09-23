@@ -78,8 +78,8 @@ const getCheerUrl = function (cheerW, usr) {
               id, display_name, login,
               broadcaster_type, view_count, profile_image_url,
             } = user;
-            const name = `[${id}] ${display_name} (${login})`;
-            const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
+            //const name = `[${id}] ${display_name} (${login})`;
+            //const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
             // console.log(`${name} -- ${props}`);
             const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`;
             message1 = `${profileElment} ${message1}`;
