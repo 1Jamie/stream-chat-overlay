@@ -113,6 +113,7 @@ function onCheer(channel, userstate, message) {
 }
 
 function onConnectedHandler(addr, port) {
+    client.join('Samma_FTW')
   // console.log(`* Connected to ${addr}:${port}`);
 }
 
