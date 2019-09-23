@@ -148,7 +148,7 @@ function onMessageHandler(channel, tags, message, self) {
       // console.log(furstnum);
       const secondnum = placement.slice(parseInt(dashLoc, 10) + 1, parseInt(placement.length) - 2);
       // console.log(secondnum);
-      const rmWord = message.slice(furstnum, parseInt(secondnum) + 1);
+      const rmWord = message.slice(parseInt(furstnum) + 1, parseInt(secondnum) + 2);
       // console.log(`rmwork: ${rmWord}`);
       message1 = message1.replace(rmWord, emoteUrl);
       while (message1.indexOf(rmWord) !== -1) {
