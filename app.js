@@ -151,14 +151,14 @@ function onMessageHandler(channel, tags, message, self) {
       const rmWord = message.slice(furstnum, parseInt(secondnum) + 1);
       // console.log(`rmwork: ${rmWord}`);
       message1 = message1.replace(rmWord, emoteUrl);
+
       if (rmWord === ':/') {
-        console.log('emote :/ was seen, bypassing second replace to prevent infinte loop issue # ');
+        console.log('emote :/ was seen, bypassing second replace to prevent infinte loop issue # 6');
       } else {
         while (message1.indexOf(rmWord) !== -1) {
-          message1 = message1.replace(rmWord, emoteUrl);
-          console.log('there was more than one instance');
-        }
-      }
+        message1 = message1.replace(rmWord, emoteUrl)
+          console.log('there was more than one instance repalcing')
+        }}
       // console.log(message1);
       return message1;
     });
