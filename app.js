@@ -113,7 +113,7 @@ function onCheer(channel, userstate, message) {
 }
 
 function onConnectedHandler(addr, port) {
-    client.join('Samma_FTW')    
+  client.join('Samma_FTW');
   // console.log(`* Connected to ${addr}:${port}`);
 }
 
@@ -148,12 +148,16 @@ function onMessageHandler(channel, tags, message, self) {
       // console.log(furstnum);
       const secondnum = placement.slice(parseInt(dashLoc, 10) + 1, parseInt(placement.length) - 2);
       // console.log(secondnum);
-      const rmWord = message.slice(parseInt(furstnum) + 1, parseInt(secondnum) + 2);
+      const rmWord = message.slice(furstnum, parseInt(secondnum) + 1);
       // console.log(`rmwork: ${rmWord}`);
       message1 = message1.replace(rmWord, emoteUrl);
-      while (message1.indexOf(rmWord) !== -1) {
-        message1 = message1.replace(rmWord, emoteUrl);
-        console.log('there was more than one instance');
+      if (rmWord === ':/') {
+        console.log('emote :/ was seen, bypassing second replace to prevent infinte loop issue # ');
+      } else {
+        while (message1.indexOf(rmWord) !== -1) {
+          message1 = message1.replace(rmWord, emoteUrl);
+          console.log('there was more than one instance');
+        }
       }
       // console.log(message1);
       return message1;
