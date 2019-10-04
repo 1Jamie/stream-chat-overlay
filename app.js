@@ -185,10 +185,10 @@ function onMessageHandler(channel, tags, message, self) {
         //console.log(channel);
         switch(channel){
           case '#samma_ftw':
-            channelLogo=`<img align="left" style="padding-right: 3px;" class="chanlogo" src="https://drive.google.com/file/d/1ExDXHTey8zAEUg4abZ4-l22bDXQmcp4D/view?usp=sharing" alt="null" id="itemImg">`;
+            channelLogo=`<img align="left" style="padding-right: 3px;" class="chanlogo" src="/css/samma-logo.png" alt="null" id="itemImg">`;
             break; 
           case '#charja113':
-            channelLogo=`<img align="left" style="padding-right: 3px;" class="chanlogo" src="https://drive.google.com/file/d/1_V2-VA7FbIBiMEXFkppZcjBHWKqDhvmb/view?usp=sharing" alt="null" id="itemImg">`
+            channelLogo=`<img align="left" style="padding-right: 3px;" class="chanlogo" src="/css/charja_logo_head.png" alt="null" id="itemImg">`
             break;
         }
         const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`;
