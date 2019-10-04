@@ -5,6 +5,6 @@ form input { border-style: solid; border-width: 1px; padding: 10px; width: 85%; 
 .emoteImg { width: 20px}
 .profImg { width: 45px; vertical-align: text-top; border-radius: 23px}
 #messages { list-style-type: none; margin: 0; padding: 0; width: 19% }
-#messages li { border-bottom-color: blueviolet; border-bottom-width: 4px; padding: 2px 5px; background-color: aqua; min-height: 60px; border-radius: 20px  }
+#messages li { color: floralwhite ;border-bottom-color: blueviolet; border-bottom-width: 4px; padding: 2px 5px; background-color: darkslategray; min-height: 60px; border-radius: 20px  }
 .badge { width: 15px}
 .chanlogo {width: 22px}
