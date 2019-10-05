@@ -192,7 +192,7 @@ function onMessageHandler(channel, tags, message, self) {
             break;
         }
         const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`;
-        io.emit('twitch', `${profileElment}<p class="msg" style="margin-left: 50px">${displayName}: ${channelLogo}  <p>${message1}</p></p>`);
+        io.emit('twitch', `${profileElment}<p>${displayName}: ${channelLogo}  <p class="msg">${message1}</p></p>`);
       }
     });
 }
