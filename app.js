@@ -14,7 +14,7 @@ const info = require('./info.js');
 const headers = {
   'Client-ID': info.key,
 };
-
+/*
 try {
 setInterval(function(){
   client.say('charja113', "Want to see the action from both sides?! hop over to http://multitwitch.tv/charja113/samma_ftw to watch both streams at once!");
@@ -27,6 +27,7 @@ setInterval(function(){
 } catch(e){
   console.error(e);
 }
+*/
 // const badge_icons = _.once(async () => (await fetch('https://badges.twitch.tv/v1/badges/global/display')).json());
 
 const pool = new Pool({
@@ -47,7 +48,7 @@ function helix(endpoint, qs) {
 
 function getUser(id) {
   return helix('users', { id })
-    .then(({ data: [user] }) => user || null).catch(console.log("bot message?"));
+    .then(({ data: [user] }) => user || null).catch(console.log("message seem from " + channel));
 }
 
 
