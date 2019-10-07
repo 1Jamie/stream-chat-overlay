@@ -47,7 +47,7 @@ function helix(endpoint, qs) {
 
 function getUser(id) {
   return helix('users', { id })
-    .then(({ data: [user] }) => user || null);
+    .then(({ data: [user] }) => user || null).catch(e => console.error(e));
 }
 
 
