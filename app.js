@@ -15,14 +15,18 @@ const headers = {
   'Client-ID': info.key,
 };
 
+try {
 setInterval(function(){
-  client.say('charja113', "Want to see the action from both sides?! hop over to https://multitwitc.tv/samma_ftw/charja113 to watch both streams at once!");
+  client.say('charja113', "Want to see the action from both sides?! hop over to https://multitwitch.tv/samma_ftw/charja113 to watch both streams at once!");
   console.log("multi-twitch sent");
 }, 30000);
 setInterval(function(){
-  client.say('samma_ftw', "Want to see the action from both sides?! hop over to https://multitwitc.tv/samma_ftw/charja113 to watch both streams at once!");
+  client.say('samma_ftw', "Want to see the action from both sides?! hop over to https://multitwitch.tv/samma_ftw/charja113 to watch both streams at once!");
   console.log("multi-twitch sent");
 }, 30000);
+} catch(e){
+  console.error(e);
+}
 // const badge_icons = _.once(async () => (await fetch('https://badges.twitch.tv/v1/badges/global/display')).json());
 
 const pool = new Pool({
