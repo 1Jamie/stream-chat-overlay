@@ -47,7 +47,7 @@ function helix(endpoint, qs) {
 
 function getUser(id) {
   return helix('users', { id })
-    .then(({ data: [user] }) => user || null).catch(console.log("message seen"));
+    .then(({ data: [user] }) => user || null).catch(console.log("bot message?"));
 }
 
 
