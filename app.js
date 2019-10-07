@@ -19,11 +19,11 @@ try {
 setInterval(function(){
   client.say('charja113', "Want to see the action from both sides?! hop over to http://multitwitch.tv/charja113/samma_ftw to watch both streams at once!");
   console.log("multi-twitch sent");
-}, 500000);
+}, 250000);
 setInterval(function(){
   client.say('samma_ftw', "Want to see the action from both sides?! hop over to http://multitwitch.tv/charja113/samma_ftw to watch both streams at once!");
   console.log("multi-twitch sent");
-}, 500000);
+}, 250000);
 } catch(e){
   console.error(e);
 }
