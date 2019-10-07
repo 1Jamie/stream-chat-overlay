@@ -192,6 +192,7 @@ function onMessageHandler(channel, tags, message, self) {
         const name = `[${id}] ${display_name} (${login})`;
         const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
         // console.log(`${name} -- ${props}`);
+        let channelLogo
         switch(channel){
           case '#samma_ftw':
             channelLogo=`<img align="left" style="padding-right: 3px;" class="chanlogo" src="/css/samma-logo.png" alt="null" id="itemImg">`;
@@ -201,7 +202,7 @@ function onMessageHandler(channel, tags, message, self) {
             break;
         }
         const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`;
-        io.emit('twitch', `${profileElment}<p>${displayName}:</p>  <p>${message1}</p></br>`);
+        io.emit('twitch', `${profileElment}<p> ${channelLogo} ${displayName}:</p>  <p class="msg">${message1}</p></br>`);
       }
     });
 }
