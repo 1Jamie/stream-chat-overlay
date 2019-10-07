@@ -15,7 +15,6 @@ const headers = {
   'Client-ID': info.key,
 };
 
-try {
 setInterval(function(){
   client.say('charja113', "Want to see the action from both sides?! hop over to https://multitwitch.tv/samma_ftw/charja113 to watch both streams at once!");
   console.log("multi-twitch sent");
@@ -24,9 +23,8 @@ setInterval(function(){
   client.say('samma_ftw', "Want to see the action from both sides?! hop over to https://multitwitch.tv/samma_ftw/charja113 to watch both streams at once!");
   console.log("multi-twitch sent");
 }, 30000);
-} catch(e){
-  console.error(e);
-}
+
+
 // const badge_icons = _.once(async () => (await fetch('https://badges.twitch.tv/v1/badges/global/display')).json());
 
 const pool = new Pool({
@@ -135,7 +133,7 @@ function onMessageHandler(channel, tags, message, self) {
     'user-name': username, 'display-name': displayName, 'user-id': userID, subscriber: sub, emotes: emote,
   } = tags;
   const commandName = message.trim();
-  if ((displayName === 'StreamElements') || (displayName === 'PretzelRocks') || (displayName === 'charja113') || (displayname === 'samma_ftw')) {
+  if ((displayName === 'StreamElements') || (displayName === 'PretzelRocks') || (displayName === 'charja113') || (displayName === 'samma_ftw')) {
     console.log('botmessage or streamer');
     return;
   }
