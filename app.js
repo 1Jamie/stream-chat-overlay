@@ -15,6 +15,10 @@ const headers = {
   'Client-ID': info.key,
 };
 
+setInterval(function(){
+  client.say(charja113, "Want to see the action from both sides?! hop over to https://multitwitc.tv/samma_ftw/charja113 to watch both streams at once!");
+  console.log("multi-twitch sent");
+}, 250000);
 // const badge_icons = _.once(async () => (await fetch('https://badges.twitch.tv/v1/badges/global/display')).json());
 
 const pool = new Pool({
@@ -78,8 +82,8 @@ const getCheerUrl = function (cheerW, usr) {
               id, display_name, login,
               broadcaster_type, view_count, profile_image_url,
             } = user;
-            const name = `[${id}] ${display_name} (${login})`;
-            props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
+            //const name = `[${id}] ${display_name} (${login})`;
+            //const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
             // console.log(`${name} -- ${props}`);
             const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`;
             message1 = `${profileElment} ${message1}`;
@@ -113,7 +117,6 @@ function onCheer(channel, userstate, message) {
 }
 
 function onConnectedHandler(addr, port) {
-  client.join('Samma_FTW');
   // console.log(`* Connected to ${addr}:${port}`);
 }
 
@@ -124,8 +127,8 @@ function onMessageHandler(channel, tags, message, self) {
     'user-name': username, 'display-name': displayName, 'user-id': userID, subscriber: sub, emotes: emote,
   } = tags;
   const commandName = message.trim();
-  if ((displayName === 'StreamElements') || (displayName === 'PretzelRocks')) {
-    console.log('botmessage');
+  if ((displayName === 'StreamElements') || (displayName === 'PretzelRocks') || (displayName === 'charja113') || (displayname === 'samma_ftw')) {
+    console.log('botmessage or streamer');
     return;
   }
 
@@ -150,8 +153,8 @@ function onMessageHandler(channel, tags, message, self) {
       // console.log(secondnum);
       const rmWord = message.slice(furstnum, parseInt(secondnum) + 1);
       // console.log(`rmwork: ${rmWord}`);
+      // console.log(`rmwork: ${rmWord}`);
       message1 = message1.replace(rmWord, emoteUrl);
-
       if (rmWord === ':/') {
         console.log('emote :/ was seen, bypassing second replace to prevent infinte loop issue # 6');
       } else {
@@ -178,21 +181,11 @@ function onMessageHandler(channel, tags, message, self) {
           id, display_name, login,
           broadcaster_type, view_count, profile_image_url,
         } = user;
-        let channelLogo
         const name = `[${id}] ${display_name} (${login})`;
         const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
         // console.log(`${name} -- ${props}`);
-        //console.log(channel);
-        switch(channel){
-          case '#samma_ftw':
-            channelLogo=`<img align="left" style="padding-right: 3px;" class="chanlogo" src="/css/samma-logo.png" alt="null" id="itemImg">`;
-            break; 
-          case '#charja113':
-            channelLogo=`<img align="left" style="padding-right: 3px;" class="chanlogo" src="/css/charja_logo_head.png" alt="null" id="itemImg">`
-            break;
-        }
         const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`;
-        io.emit('twitch', `${profileElment}<p>${displayName}: ${channelLogo}  <p class="msg">${message1}</p></p>`);
+        io.emit('twitch', `${profileElment}<p>${displayName}:</p>  <p>${message1}</p></br>`);
       }
     });
 }
