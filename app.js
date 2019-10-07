@@ -109,6 +109,9 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.render('index.ejs');
 });
+app.get('/admin', (req, res) => {
+  res.render('admin.ejs');
+});
 
 const config = {
   identity: {
