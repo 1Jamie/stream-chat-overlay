@@ -1,0 +1,25 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Admin streamchatoverlay</title>
+  <meta name="description" content="Streamchatoverlay Bot page">
+  <meta name="author" content="SitePoint">
+  <script src="../../socket.io/socket.io.js"></script>
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+  <script>
+    var socket = io.connect('34.73.6.238:80');
+    //we will be creating the jquery page here and dealing with postgres on the backend. We will need to create the database for the commands in postgres.
+    //what we can do for the commands list is we can do a select * from commands then take the json and hand it off to us here and parse it to display on the page
+    //what will be the hard one will be deleting them.... we'll deal with that later... for now if we want to create a new command we can create a form that when
+    //submitted it will do an addition to the database entries that will be queried on the backend for bot commands.  (this is notes for me later)
+  </script>
+</body>
+</html>

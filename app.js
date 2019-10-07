@@ -14,7 +14,20 @@ const info = require('./info.js');
 const headers = {
   'Client-ID': info.key,
 };
-
+/*
+try {
+setInterval(function(){
+  client.say('charja113', "Want to see the action from both sides?! hop over to http://multitwitch.tv/charja113/samma_ftw to watch both streams at once!");
+  console.log("multi-twitch sent");
+}, 250000);
+setInterval(function(){
+  client.say('samma_ftw', "Want to see the action from both sides?! hop over to http://multitwitch.tv/charja113/samma_ftw to watch both streams at once!");
+  console.log("multi-twitch sent");
+}, 250000);
+} catch(e){
+  console.error(e);
+}
+*/
 // const badge_icons = _.once(async () => (await fetch('https://badges.twitch.tv/v1/badges/global/display')).json());
 
 const pool = new Pool({
@@ -35,7 +48,7 @@ function helix(endpoint, qs) {
 
 function getUser(id) {
   return helix('users', { id })
-    .then(({ data: [user] }) => user || null);
+    .then(({ data: [user] }) => user || null).catch(console.log("message seem from " + channel));
 }
 
 
@@ -96,6 +109,9 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.render('index.ejs');
 });
+app.get('/admin', (req, res) => {
+  res.render('admin.ejs');
+});
 
 const config = {
   identity: {
@@ -123,8 +139,8 @@ function onMessageHandler(channel, tags, message, self) {
     'user-name': username, 'display-name': displayName, 'user-id': userID, subscriber: sub, emotes: emote,
   } = tags;
   const commandName = message.trim();
-  if ((displayName === 'StreamElements') || (displayName === 'PretzelRocks')) {
-    console.log('botmessage');
+  if ((displayName === 'StreamElements') || (displayName === 'PretzelRocks') || (displayName === 'charja113') || (displayName === 'samma_ftw')) {
+    console.log('botmessage or streamer');
     return;
   }
 
@@ -148,6 +164,7 @@ function onMessageHandler(channel, tags, message, self) {
       const secondnum = placement.slice(parseInt(dashLoc, 10) + 1, parseInt(placement.length) - 2);
       // console.log(secondnum);
       const rmWord = message.slice(furstnum, parseInt(secondnum) + 1);
+      // console.log(`rmwork: ${rmWord}`);
       // console.log(`rmwork: ${rmWord}`);
       message1 = message1.replace(rmWord, emoteUrl);
       if (rmWord === ':/') {
@@ -179,8 +196,17 @@ function onMessageHandler(channel, tags, message, self) {
         const name = `[${id}] ${display_name} (${login})`;
         const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
         // console.log(`${name} -- ${props}`);
+        let channelLogo
+        switch(channel){
+          case '#samma_ftw':
+            channelLogo=`<img align="left" style="padding-right: 3px;" class="chanlogo" src="/css/samma-logo.png" alt="null" id="itemImg">`;
+            break; 
+          case '#charja113':
+            channelLogo=`<img align="left" style="padding-right: 3px;" class="chanlogo" src="/css/charja_logo_head.png" alt="null" id="itemImg">`
+            break;
+        }
         const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`;
-        io.emit('twitch', `${profileElment}<p>${displayName}:</p>  <p>${message1}</p></br>`);
+        io.emit('twitch', `${profileElment}<p> ${channelLogo} ${displayName}:</p>  <p class="msg">${message1}</p></br>`);
       }
     });
 }
