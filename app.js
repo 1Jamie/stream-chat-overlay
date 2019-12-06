@@ -1,22 +1,30 @@
+//setting the stuff we need for node (still need to fix deps)
 const express = require('express');
-
 const app = express();
 const { Pool } = require('pg');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const tmi = require('tmi.js');
-// const once = require('lodash.once');
 const fetch = require('node-fetch');
+let multi = 'off'
+app.use(express.static('public'));
 
+//set our resources and pages
+app.get('/', (req, res) => {
+  res.render('index.ejs');
+});
+app.get('/admin', (req, res) => {
+  res.render('admin.ejs');
+});
 app.use('/css', express.static(`${__dirname}/css`));
 const info = require('./info.js');
 
 const headers = {
   'Client-ID': info.key,
 };
-
 // const badge_icons = _.once(async () => (await fetch('https://badges.twitch.tv/v1/badges/global/display')).json());
 
+//setup our postgresql information we are going to need 
 const pool = new Pool({
   user: 'root',
   host: 'localhost',
@@ -33,12 +41,13 @@ function helix(endpoint, qs) {
     .then((res) => res.json());
 }
 
+//this does does the obvious... gets users info using helix call
 function getUser(id) {
   return helix('users', { id })
-    .then(({ data: [user] }) => user || null);
+    .then(({ data: [user] }) => user || null).catch(console.log("here!"));
 }
 
-
+//this is going to handle our cheers when called console logs left for debugging if needed later
 const getCheerUrl = function (cheerW, usr) {
   pool.query('select cheer, url from cheers').then((res) => {
     const result = res.rows;
@@ -50,7 +59,6 @@ const getCheerUrl = function (cheerW, usr) {
       // console.log('grab further', result[x].cheer);
       const indexVal = cheerW.indexOf(result[x].cheer);
       console.log('userstate', usr);
-      // console.log(indexVal);
       if (indexVal !== -1) {
         message1 = cheerW;
         while (message1.indexOf(result[x].cheer) !== -1) {
@@ -61,14 +69,14 @@ const getCheerUrl = function (cheerW, usr) {
         }
         done = 1;
         break;
-      } else {
-        // console.log('no db entry');
       }
     }
     if (done !== 1) {
+      //tjos wo;; send the message even know there was no cheer in the db... which whoops
       io.emit('cheer', cheerW);
       // console.log('cheer was made with no entry in DB', cheerW);
     } else {
+      //this is gonna handle the proper cheer and build the cheer message since its a different event than messges
       getUser(usr['user-id'])
         .then((user) => {
           if (!user) {
@@ -91,31 +99,30 @@ const getCheerUrl = function (cheerW, usr) {
   });
 };
 
-app.use(express.static('public'));
-
-app.get('/', (req, res) => {
-  res.render('index.ejs');
-});
-
+//this is going to define the twitch tmi sign in info and channels to sign into
 const config = {
   identity: {
     username: 'charja113',
     password: info.oauth,
   },
   channels: [
-    'charja113',
+
+   'charja113'
+
   ],
 };
+
+//this handles the cheers when they happen
 function onCheer(channel, userstate, message) {
-  // console.log(userstate);
-  // console.log(`message: ${message}`);
   getCheerUrl(message, userstate);
 }
 
+//this is going to define the obvious "connectionHadler"
 function onConnectedHandler(addr, port) {
   // console.log(`* Connected to ${addr}:${port}`);
 }
 
+//This is going to define how the messages are handled when the event happens
 function onMessageHandler(channel, tags, message, self) {
   let message1;
 
@@ -123,16 +130,16 @@ function onMessageHandler(channel, tags, message, self) {
     'user-name': username, 'display-name': displayName, 'user-id': userID, subscriber: sub, emotes: emote,
   } = tags;
   const commandName = message.trim();
-  if ((displayName === 'StreamElements') || (displayName === 'PretzelRocks')) {
-    console.log('botmessage');
-    return;
-  }
 
   if (commandName === '!project') {
     client.say(channel, 'the project page is https://gitlab.streamchatoverlay.xyz/jamie/streamchatoverlay');
     console.log('project command seen, message should be sent');
   }
-
+  
+  if ((displayName === 'StreamElements') || (displayName === 'PretzelRocks') || (displayName === 'Charja113') || (displayName === 'Samma_FTW')) {
+    console.log('botmessage or streamer');
+    return;
+  }
 
   if (emote !== null) {
     message1 = message;
@@ -149,6 +156,7 @@ function onMessageHandler(channel, tags, message, self) {
       // console.log(secondnum);
       const rmWord = message.slice(furstnum, parseInt(secondnum) + 1);
       // console.log(`rmwork: ${rmWord}`);
+      // console.log(`rmwork: ${rmWord}`);
       message1 = message1.replace(rmWord, emoteUrl);
       if (rmWord === ':/') {
         console.log('emote :/ was seen, bypassing second replace to prevent infinte loop issue # 6');
@@ -164,9 +172,6 @@ function onMessageHandler(channel, tags, message, self) {
     // console.log('i think we messed up if theres an emote');
     message1 = message;
   }
-
-  // console.log('twitch', `${displayName} : ${message1}`);
-  // c onsole.log(tags);
   getUser(userID)
     .then((user) => {
       if (!user) {
@@ -176,17 +181,27 @@ function onMessageHandler(channel, tags, message, self) {
           id, display_name, login,
           broadcaster_type, view_count, profile_image_url,
         } = user;
+        let channelLogo
         const name = `[${id}] ${display_name} (${login})`;
         const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
+        switch(channel){
+          case '#samma_ftw':
+            channelLogo=`<img align="left" style="padding-right: 3px;" class="chanlogo" src="/css/samma-logo.png" alt="null" id="itemImg">`;
+            break; 
+          case '#charja113':
+            channelLogo=`<img align="left" style="padding-right: 3px;" class="chanlogo" src="/css/charja_logo_head.png" alt="null" id="itemImg">`
+            break;
+        }
+
         // console.log(`${name} -- ${props}`);
         const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`;
-        io.emit('twitch', `${profileElment}<p>${displayName}:</p>  <p>${message1}</p></br>`);
+        io.emit('twitch', `${profileElment}<p> ${channelLogo} ${displayName}:</p>  <p class="msg">${message1}</p></br>`);
       }
     });
 }
 
+//this is close to what i would call the event area or loop (not actually a loop though, just a term)
 const client = new tmi.client(config);
-
 client.on('connected', onConnectedHandler);
 client.on('message', onMessageHandler);
 client.on('cheer', onCheer);
@@ -203,6 +218,11 @@ io.sockets.on('connection', (socket) => {
     io.emit('chat_message', `<strong>${socket.username}</strong>: ${message}`);
   });
 });
+// this is going to be the handling of the admin page events
+io.sockets.on('adminCon', (info) => {
+console.log(info)
+io.emit('adminEmit', 'it worked')
+})
 
 const server = http.listen(80, () => {
   console.log('listening on *:80');
