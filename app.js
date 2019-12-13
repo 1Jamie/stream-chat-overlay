@@ -135,7 +135,38 @@ function onMessageHandler(channel, tags, message, self) {
     client.say(channel, 'the project page is https://gitlab.streamchatoverlay.xyz/jamie/streamchatoverlay');
     console.log('project command seen, message should be sent');
   }
-  
+  if (commandName === '!multimsg'){
+        if ((displayName === 'Charja113') || (displayName === 'Samma_FTW')){
+          if (multi === 'off'){
+            multi = 'on'
+            console.log('multi link turned on')
+            client.join('samma_ftw')
+            //client.say('samma_ftw', 'multi link message: on')
+            client.say('charja113', 'multi link message: on')
+            multiIntervalc =  setInterval(function(){
+              client.say('charja113', "Want to get in the action from both sides? The Multi twitch link to watch both streams is http://multitwitch.tv/charja113/samma_ftw")
+            }, 500000);
+            //multiIntervalm =  setInterval(function(){
+             // client.say('samma_ftw', "Want to get in the action from both sides? The Multi twitch link to watch both streams is http://multitwitch.tv/charja113/samma_ftw")
+            //}, 500000);
+            return multi
+          }
+          else {
+            clearInterval(multiIntervalc);
+            //clearInterval(multiIntervalm);
+            client.part('samma_ftw')
+            //client.say('samma_ftw', 'multi link message: off')
+            client.say('charja113', 'multi link message: off')
+            multi = 'off'
+            console.log('multi link turned off')
+            return multi
+          }
+        }
+  }
+
+  if (commandName === '!multitwitch'){
+    client.say(channel, "Want to get in the action from both sides? The Multi twitch link to watch both streams is http://multitwitch.tv/charja113/samma_ftw")
+  }
   if ((displayName === 'StreamElements') || (displayName === 'PretzelRocks') || (displayName === 'Charja113') || (displayName === 'Samma_FTW')) {
     console.log('botmessage or streamer');
     return;
