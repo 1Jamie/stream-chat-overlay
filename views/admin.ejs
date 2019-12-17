@@ -1,6 +1,7 @@
 <!doctype html>
 
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
 
@@ -14,18 +15,46 @@
 </head>
 
 <body>
+  <table id="here_table" class="table">
+  </table>
   <script>
     var socket = io.connect('192.168.30.115:8083');
     socket.on('connect', () => {
       console.log(socket.connected);
       const usr = prompt('enter username');
-      const password = prompt ('enter password');
+      const password = prompt('enter password');
       const info = [usr, password]
       socket.emit('adminCon', info);
       console.log(info)
-      socket.on('authEmit', function(connectInf) {
-         console.log(connectInf)
+      socket.on('authEmit', function (connectInf) {
+        console.log(connectInf)
       })
+    })
+    socket.on('sendcommands', function (commands) {
+      var table_body = document.createElement("table")
+      var fragment = document.createDocumentFragment();
+      var number_of_rows = commands.rowCount;
+      var number_of_columns = 2;
+      console.log(commands)
+      var rowCounter = 0
+      for (var row = 0; row < number_of_rows; row++) {
+        var tr = document.createElement("tr");
+        var td1 = document.createElement("td");
+        td1.innerHTML = (commands.rows[rowCounter].command_name)
+        tr.appendChild(td1);
+        let td2 = document.createElement("td");
+        td2.innerHTML = (commands.rows[rowCounter].response)
+        tr.appendChild(td2);
+        tdedit = document.createElement("td");
+        tdedit.innerHTML = (`<button id = ${commands.rows[rowCounter].id} >edit</button>`)
+        tr.appendChild(tdedit);
+        console.log(tr);
+        rowCounter++
+        fragment.appendChild(tr);
+        console.log(table_body)
+      }
+      table_body.appendChild(fragment)
+      document.getElementById("here_table").appendChild(table_body);
     })
     //we will be creating the jquery page here and dealing with postgres on the backend. We will need to create the database for the commands in postgres.
     //what we can do for the commands list is we can do a select * from commands then take the json and hand it off to us here and parse it to display on the page
@@ -33,4 +62,5 @@
     //submitted it will do an addition to the database entries that will be queried on the backend for bot commands.  (this is notes for me later)
   </script>
 </body>
+
 </html>

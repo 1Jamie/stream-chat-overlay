@@ -1,7 +1,9 @@
 //setting the stuff we need for node (still need to fix deps)
 const express = require('express');
 const app = express();
-const { Pool } = require('pg');
+const {
+  Pool
+} = require('pg');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const tmi = require('tmi.js');
@@ -37,14 +39,20 @@ const pool = new Pool({
 function helix(endpoint, qs) {
   const queryString = new URLSearchParams(qs);
   const url = `https://api.twitch.tv/helix/${endpoint}?${queryString}`;
-  return fetch(url, { headers })
+  return fetch(url, {
+      headers
+    })
     .then((res) => res.json());
 }
 
 //this does does the obvious... gets users info using helix call
 function getUser(id) {
-  return helix('users', { id })
-    .then(({ data: [user] }) => user || null).catch(console.log("here!"));
+  return helix('users', {
+      id
+    })
+    .then(({
+      data: [user]
+    }) => user || null).catch(console.log("here!"));
 }
 
 //this is going to handle our cheers when called console logs left for debugging if needed later
@@ -83,8 +91,12 @@ const getCheerUrl = function (cheerW, usr) {
             // console.log('User not found');
           } else {
             const {
-              id, display_name, login,
-              broadcaster_type, view_count, profile_image_url,
+              id,
+              display_name,
+              login,
+              broadcaster_type,
+              view_count,
+              profile_image_url,
             } = user;
             //const name = `[${id}] ${display_name} (${login})`;
             //const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
@@ -107,7 +119,7 @@ const config = {
   },
   channels: [
 
-   'charja113'
+    'charja113'
 
   ],
 };
@@ -116,6 +128,8 @@ const config = {
 function onCheer(channel, userstate, message) {
   getCheerUrl(message, userstate);
 }
+
+//We are gonna deal with the admin pannel here, it will both start up authentication and then were gonna server up the bot commands
 function onAdminCon(conninfo) {
   console.log(conninfo);
   const text = 'select * from users where password=$2 and username=$1'
@@ -123,14 +137,24 @@ function onAdminCon(conninfo) {
     if (err) {
       console.log(err.stack);
     } else {
+      console.log(res);
       if (res.rowCount != 0) {
-       io.emit('authEmit', 'permit')
+        io.emit('authEmit', 'permit')
+        //const commands_query = "select * from commands where user_name='" + conninfo[0] +"'";
+        //console.log(commands_query)
+        pool.query('select command_name, response, id from commands where user_name=$1', [conninfo[0]], (err, res) => {
+          if (err) {
+            console.log(err.stack)
+          } else {
+            console.log(res)
+            io.emit('sendcommands', res)
+          }
+        })
       } else {
-       io.emit('authEmit', 'deny')
+        io.emit('authEmit', 'deny')
       }
     }
   })
-  io.emit('authEmit', 'it works')
 }
 //this is going to define the obvious "connectionHadler"
 function onConnectedHandler(addr, port) {
@@ -142,7 +166,11 @@ function onMessageHandler(channel, tags, message, self) {
   let message1;
 
   const {
-    'user-name': username, 'display-name': displayName, 'user-id': userID, subscriber: sub, emotes: emote,
+    'user-name': username,
+    'display-name': displayName,
+    'user-id': userID,
+    subscriber: sub,
+    emotes: emote,
   } = tags;
   const commandName = message.trim();
 
@@ -150,36 +178,35 @@ function onMessageHandler(channel, tags, message, self) {
     client.say(channel, 'the project page is https://gitlab.streamchatoverlay.xyz/jamie/streamchatoverlay');
     console.log('project command seen, message should be sent');
   }
-  if (commandName === '!multimsg'){
-        if ((displayName === 'Charja113') || (displayName === 'Samma_FTW')){
-          if (multi === 'off'){
-            multi = 'on'
-            console.log('multi link turned on')
-            client.join('samma_ftw')
-            //client.say('samma_ftw', 'multi link message: on')
-            client.say('charja113', 'multi link message: on')
-            multiIntervalc =  setInterval(function(){
-              client.say('charja113', "Want to get in the action from both sides? The Multi twitch link to watch both streams is http://multitwitch.tv/charja113/samma_ftw")
-            }, 500000);
-            //multiIntervalm =  setInterval(function(){
-             // client.say('samma_ftw', "Want to get in the action from both sides? The Multi twitch link to watch both streams is http://multitwitch.tv/charja113/samma_ftw")
-            //}, 500000);
-            return multi
-          }
-          else {
-            clearInterval(multiIntervalc);
-            //clearInterval(multiIntervalm);
-            client.part('samma_ftw')
-            //client.say('samma_ftw', 'multi link message: off')
-            client.say('charja113', 'multi link message: off')
-            multi = 'off'
-            console.log('multi link turned off')
-            return multi
-          }
-        }
+  if (commandName === '!multimsg') {
+    if ((displayName === 'Charja113') || (displayName === 'Samma_FTW')) {
+      if (multi === 'off') {
+        multi = 'on'
+        console.log('multi link turned on')
+        client.join('samma_ftw')
+        //client.say('samma_ftw', 'multi link message: on')
+        client.say('charja113', 'multi link message: on')
+        multiIntervalc = setInterval(function () {
+          client.say('charja113', "Want to get in the action from both sides? The Multi twitch link to watch both streams is http://multitwitch.tv/charja113/samma_ftw")
+        }, 500000);
+        //multiIntervalm =  setInterval(function(){
+        // client.say('samma_ftw', "Want to get in the action from both sides? The Multi twitch link to watch both streams is http://multitwitch.tv/charja113/samma_ftw")
+        //}, 500000);
+        return multi
+      } else {
+        clearInterval(multiIntervalc);
+        //clearInterval(multiIntervalm);
+        client.part('samma_ftw')
+        //client.say('samma_ftw', 'multi link message: off')
+        client.say('charja113', 'multi link message: off')
+        multi = 'off'
+        console.log('multi link turned off')
+        return multi
+      }
+    }
   }
 
-  if (commandName === '!multitwitch'){
+  if (commandName === '!multitwitch') {
     client.say(channel, "Want to get in the action from both sides? The Multi twitch link to watch both streams is http://multitwitch.tv/charja113/samma_ftw")
   }
   if ((displayName === 'StreamElements') || (displayName === 'PretzelRocks') || (displayName === 'Charja113') || (displayName === 'Samma_FTW')) {
@@ -208,9 +235,10 @@ function onMessageHandler(channel, tags, message, self) {
         console.log('emote :/ was seen, bypassing second replace to prevent infinte loop issue # 6');
       } else {
         while (message1.indexOf(rmWord) !== -1) {
-        message1 = message1.replace(rmWord, emoteUrl)
+          message1 = message1.replace(rmWord, emoteUrl)
           console.log('there was more than one instance repalcing')
-        }}
+        }
+      }
       // console.log(message1);
       return message1;
     });
@@ -224,18 +252,22 @@ function onMessageHandler(channel, tags, message, self) {
         // console.log('User not found');
       } else {
         const {
-          id, display_name, login,
-          broadcaster_type, view_count, profile_image_url,
+          id,
+          display_name,
+          login,
+          broadcaster_type,
+          view_count,
+          profile_image_url,
         } = user;
         let channelLogo
         const name = `[${id}] ${display_name} (${login})`;
         const props = `${broadcaster_type}, ${view_count} view(s), image: ${profile_image_url}`;
-        switch(channel){
+        switch (channel) {
           case '#samma_ftw':
-            channelLogo=`<img align="left" style="padding-right: 3px;" class="chanlogo" src="/css/samma-logo.png" alt="null" id="itemImg">`;
-            break; 
+            channelLogo = `<img align="left" style="padding-right: 3px;" class="chanlogo" src="/css/samma-logo.png" alt="null" id="itemImg">`;
+            break;
           case '#charja113':
-            channelLogo=`<img align="left" style="padding-right: 3px;" class="chanlogo" src="/css/charja_logo_head.png" alt="null" id="itemImg">`
+            channelLogo = `<img align="left" style="padding-right: 3px;" class="chanlogo" src="/css/charja_logo_head.png" alt="null" id="itemImg">`
             break;
         }
 
