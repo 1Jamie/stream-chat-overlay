@@ -156,6 +156,16 @@ function onAdminCon(conninfo) {
     }
   })
 }
+function onCmdChange(cmdInf){
+  const cmdtxt = 'update commands set response=$2 where id=$1'
+  pool.query(cmdtxt, cmdInf, (err, res) => {
+    if (err) {
+      console.log(err.stack)
+    } else {
+      console.log(`command updated with values ${cmdInf}`)
+    }
+  })
+}
 //this is going to define the obvious "connectionHadler"
 function onConnectedHandler(addr, port) {
   // console.log(`* Connected to ${addr}:${port}`);
@@ -292,6 +302,7 @@ io.sockets.on('connection', (socket) => {
     // console.log(  `user ${socket.username} connected`,);
   });
   socket.on('adminCon', onAdminCon);
+  socket.on('command_change', onCmdChange)
 
   socket.on('chat_message', (message) => {
     io.emit('chat_message', `<strong>${socket.username}</strong>: ${message}`);

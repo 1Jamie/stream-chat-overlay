@@ -18,6 +18,7 @@
   <table id="here_table" class="table">
   </table>
   <script>
+    let cmdobj;
     var socket = io.connect('192.168.30.115:8083');
     socket.on('connect', () => {
       console.log(socket.connected);
@@ -38,16 +39,33 @@
       console.log(commands)
       var rowCounter = 0
       for (var row = 0; row < number_of_rows; row++) {
+        console.log(commands)
         var tr = document.createElement("tr");
         var td1 = document.createElement("td");
-        td1.innerHTML = (commands.rows[rowCounter].command_name)
+        td1.innerHTML = (`${commands.rows[row].command_name}`)
+        td1.setAttribute("id", `${commands.rows[row].id}td1`)
         tr.appendChild(td1);
         let td2 = document.createElement("td");
-        td2.innerHTML = (commands.rows[rowCounter].response)
+        td2.innerHTML = (`<p id = "${commands.rows[row].id}p" >` + commands.rows[row].response+ "</p>" + `<input class="inputtd" id="${commands.rows[row].id}response"></input>`)
+        td2.setAttribute("id", `${commands.rows[row].id}td2`)
         tr.appendChild(td2);
         tdedit = document.createElement("td");
-        tdedit.innerHTML = (`<button id = ${commands.rows[rowCounter].id} >edit</button>`)
+        tdedit.innerHTML = (`<button id = ${commands.rows[row].id} >edit</button>`)
         tr.appendChild(tdedit);
+        tdedit.addEventListener('click', function(elem){
+          console.log(elem)
+          let btn = document.getElementById(elem.srcElement.id)
+          btn.innerHTML = ('Saved')
+          let input = document.getElementById(`${elem.srcElement.id}response`)
+          console.log(input.value)
+          console.log(input)
+          let cmdUpdate = [ elem.srcElement.id , input.value ]
+          socket.emit('command_change', cmdUpdate);
+          document.getElementById(`${elem.srcElement.id}p`).textContent = input.value;
+          console.log(input.value);
+          console.log(document.getElementById(`${elem.srcElement.id}p`));  
+          input.value = "";
+        })
         console.log(tr);
         rowCounter++
         fragment.appendChild(tr);
