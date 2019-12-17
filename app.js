@@ -27,7 +27,7 @@ const headers = {
 //setup our postgresql information we are going to need 
 const pool = new Pool({
   user: 'root',
-  host: '192.168.30.102',
+  host: 'localhost',
   database: 'emotes',
   password: 'password',
   port: 5432,
@@ -49,7 +49,7 @@ function getUser(id) {
 
 //this is going to handle our cheers when called console logs left for debugging if needed later
 const getCheerUrl = function (cheerW, usr) {
-  pool.query('select cheer, url from cheers order by id desc').then((res) => {
+  pool.query('select cheer, url from cheers').then((res) => {
     const result = res.rows;
     let message1;
     let done;
@@ -116,22 +116,7 @@ const config = {
 function onCheer(channel, userstate, message) {
   getCheerUrl(message, userstate);
 }
-function onAdminCon(conninfo) {
-  console.log(conninfo);
-  const text = 'select * from users where password=$2 and username=$1'
-  pool.query(text, conninfo, (err, res) => {
-    if (err) {
-      console.log(err.stack);
-    } else {
-      if (res.rowCount != 0) {
-       io.emit('authEmit', 'permit')
-      } else {
-       io.emit('authEmit', 'deny')
-      }
-    }
-  })
-  io.emit('authEmit', 'it works')
-}
+
 //this is going to define the obvious "connectionHadler"
 function onConnectedHandler(addr, port) {
   // console.log(`* Connected to ${addr}:${port}`);
@@ -259,15 +244,17 @@ io.sockets.on('connection', (socket) => {
     socket.username = username;
     // console.log(  `user ${socket.username} connected`,);
   });
-  socket.on('adminCon', onAdminCon);
 
   socket.on('chat_message', (message) => {
     io.emit('chat_message', `<strong>${socket.username}</strong>: ${message}`);
   });
 });
 // this is going to be the handling of the admin page events
+io.sockets.on('adminCon', (info) => {
+console.log(info)
+io.emit('adminEmit', 'it worked')
+})
 
-
-const server = http.listen(8083, () => {
-  console.log('listening on *:8083');
+const server = http.listen(80, () => {
+  console.log('listening on *:80');
 });
