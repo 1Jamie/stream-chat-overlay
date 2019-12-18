@@ -16,14 +16,18 @@
 
 # future planned
 ## twitch
+    - Message Filtration
 
+## All other platforms will not get built till twitch is finished
 
 ## Dlive
-    - Message integration
-    - Cheer integration
-    - User Icons
-    - User Emotes
-    - User badges? (do they exist?)
+    - No planned Support
+
+## Mixer
+    - Message handling
+    - Display user Picture
+    - Message filtration
+
 ## Youtube
     - Write messages to dom
     - Write Profile Image to Dom
