@@ -137,7 +137,7 @@ function onAdminCon(conninfo) {
     if (err) {
       console.log(err.stack);
     } else {
-      console.log(res);
+      //console.log(res);
       if (res.rowCount != 0) {
         io.emit('authEmit', 'permit')
         //const commands_query = "select * from commands where user_name='" + conninfo[0] +"'";
@@ -146,7 +146,7 @@ function onAdminCon(conninfo) {
           if (err) {
             console.log(err.stack)
           } else {
-            console.log(res)
+            //console.log(res)
             io.emit('sendcommands', res)
           }
         })
@@ -166,6 +166,37 @@ function onCmdChange(cmdInf){
     }
   })
 }
+
+function ondeleteCmd(cmdInf){
+  const text = 'delete from commands where id=$1';
+  pool.query(text, cmdInf, (err, res) => {
+    if (err) {
+    console.log(err.stack)
+  } else {
+    console.log(`command ${cmdInf} deleted`)
+  }
+  })
+}
+function onaddCmd(cmdInf){
+  const text = "insert into commands (user_name, command_name, response) values ($3 , $1 , $2)"
+  pool.query(text, cmdInf, (err, res) => {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(`command ${cmdInf} added`)
+      let userar = [ cmdInf[2] ]
+      console.log(userar)
+      pool.query('select command_name, response, id from commands where user_name=$1', userar, (err, res) => {
+        if (err) {
+          console.log(err.stack)
+        } else {
+          //console.log(res)
+          io.emit('sendcommands', res)
+        }
+      })
+    }
+  })
+}
 //this is going to define the obvious "connectionHadler"
 function onConnectedHandler(addr, port) {
   // console.log(`* Connected to ${addr}:${port}`);
@@ -182,12 +213,22 @@ function onMessageHandler(channel, tags, message, self) {
     subscriber: sub,
     emotes: emote,
   } = tags;
-  const commandName = message.trim();
 
-  if (commandName === '!project') {
+  const commandName = [ message.trim() , channel.substr(1) ]
+  
+  pool.query('select response from commands where command_name=$1 and user_name=$2', commandName, (err, res) => {
+    console.log( commandName )
+    console.log(res)
+    if (res.rowCount != 0) {
+      client.say(channel, res.rows[0].response)
+    }
+  })
+
+  
+  /*if (commandName === '!project') {
     client.say(channel, 'the project page is https://gitlab.streamchatoverlay.xyz/jamie/streamchatoverlay');
     console.log('project command seen, message should be sent');
-  }
+  }*/
   if (commandName === '!multimsg') {
     if ((displayName === 'Charja113') || (displayName === 'Samma_FTW')) {
       if (multi === 'off') {
@@ -302,8 +343,9 @@ io.sockets.on('connection', (socket) => {
     // console.log(  `user ${socket.username} connected`,);
   });
   socket.on('adminCon', onAdminCon);
-  socket.on('command_change', onCmdChange)
-
+  socket.on('command_change', onCmdChange);
+  socket.on('newcmd', onaddCmd);
+  socket.on('deleteCmd', ondeleteCmd)
   socket.on('chat_message', (message) => {
     io.emit('chat_message', `<strong>${socket.username}</strong>: ${message}`);
   });
