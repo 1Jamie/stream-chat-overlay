@@ -1,6 +1,9 @@
 # Working
 ## Bot 
-    - Command !project returns its projects page
+    - Commands store in database
+    - Commands table is able to have commands edited, removed, added from the admin page
+    - Support for multiple users with unique commands
+
 ## Twitch 
     - Messages to dom
     - Profile imsages to dom
@@ -10,6 +13,9 @@
 # In progress
 ## Twitch
     - Badges
+
+## Bot 
+    - Admin pannel functionality and design
 
 # Known issues
 ## Twitch
@@ -33,4 +39,6 @@
     - Write Profile Image to Dom
     - Write username to Dom With message
 ## Bot
-    - Add in a gneral set of commands for the bot
+    - support for commands with specifiers like !so username 
+      would do a shoutout for that user
+    - support for multiple admins for the same channel
