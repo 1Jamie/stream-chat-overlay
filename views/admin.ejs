@@ -41,6 +41,7 @@
       for (var row = 0; row < number_of_rows; row++) {
         console.log(commands)
         var tr = document.createElement("tr");
+        tr.setAttribute('id', `${commands.rows[row].id}tr`)
         var td1 = document.createElement("td");
         td1.innerHTML = (`${commands.rows[row].command_name}`)
         td1.setAttribute("id", `${commands.rows[row].id}td1`)
@@ -52,6 +53,20 @@
         tdedit = document.createElement("td");
         tdedit.innerHTML = (`<button id = ${commands.rows[row].id} >edit</button>`)
         tr.appendChild(tdedit);
+        tddelete = document.createElement("td");
+        tddelete.innerHTML = (`<button data-index-number = "${commands.rows[row].id}" id = "${commands.rows[row].id}delete" >delete</button>`)
+        tr.appendChild(tddelete);
+        tddelete.addEventListener('click' , function (elem){
+          console.log(`${elem.srcElement.dataset.indexNumber}`)
+          let rowtr = document.getElementById(`${elem.srcElement.dataset.indexNumber}tr`)
+          let conf = confirm('Are you sure you would like to delete this command?')
+          if (conf === true){
+            rowtr.parentNode.removeChild(rowtr);
+            socket.emit('command_delete', `${elem.srcElement.dataset.indexNumber}`);
+          } else {
+            console.log(`command not deleted`);
+          }
+        })
         tdedit.addEventListener('click', function(elem){
           console.log(elem)
           let btn = document.getElementById(elem.srcElement.id)
@@ -71,6 +86,7 @@
         fragment.appendChild(tr);
         console.log(table_body)
       }
+      
       table_body.appendChild(fragment)
       document.getElementById("here_table").appendChild(table_body);
     })
