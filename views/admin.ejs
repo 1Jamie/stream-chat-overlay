@@ -1,0 +1,111 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Admin streamchatoverlay</title>
+  <meta name="description" content="Streamchatoverlay Bot page">
+  <meta name="author" content="SitePoint">
+  <script src="../../socket.io/socket.io.js"></script>
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+  <table id="here_table" class="table">
+  </table>
+  <script>
+    const usr = prompt('enter username');
+    const password = prompt('enter password');
+    let cmdobj;
+    let editing = function(tdedit){
+      tdedit.addEventListener('click', function(elem){
+          //console.log(elem)
+          let btn = document.getElementById(elem.srcElement.id)
+          btn.innerHTML = ('Saved')
+          let input = document.getElementById(`${elem.srcElement.id}response`)
+          //console.log(input.value)
+          //console.log(input)
+          let cmdUpdate = [ elem.srcElement.id , input.value ]
+          socket.emit('command_change', cmdUpdate);
+          document.getElementById(`${elem.srcElement.id}p`).textContent = input.value;
+          //console.log(input.value);
+          //console.log(document.getElementById(`${elem.srcElement.id}p`));  
+          input.value = "";
+        })
+    }
+    var socket = io.connect('192.168.30.115:8083');
+    socket.on('connect', () => {
+      console.log(socket.connected);
+      const info = [usr, password]
+      socket.emit('adminCon', info);
+      console.log(info)
+      socket.on('authEmit', function (connectInf) {
+        console.log(connectInf)
+      })
+    })
+    socket.on('sendcommands', function (commands) {
+      var table_body = document.createElement("table")
+      var fragment = document.createDocumentFragment();
+      var number_of_rows = commands.rowCount;
+      table_body.setAttribute('id', 'commandstb')
+      var number_of_columns = 2;
+      console.log(commands)
+      var rowCounter = 0
+      for (var row = 0; row < number_of_rows; row++) {
+        console.log(commands)
+        var tr = document.createElement("tr");
+        tr.setAttribute('id', `${commands.rows[row].id}tr`)
+        var td1 = document.createElement("td");
+        td1.innerHTML = (`${commands.rows[row].command_name}`)
+        td1.setAttribute("id", `${commands.rows[row].id}td1`)
+        tr.appendChild(td1);
+        let td2 = document.createElement("td");
+        td2.innerHTML = (`<p id = "${commands.rows[row].id}p" >` + commands.rows[row].response+ "</p>" + `<input class="inputtd" id="${commands.rows[row].id}response"></input>`)
+        td2.setAttribute("id", `${commands.rows[row].id}td2`)
+        tr.appendChild(td2);
+        tdedit = document.createElement("td");
+        tdedit.innerHTML = (`<button id = ${commands.rows[row].id} >edit</button>`)
+        tr.appendChild(tdedit);
+        tddelete = document.createElement("td");
+        tddelete.innerHTML = (`<button data-index-number = "${commands.rows[row].id}" id = "${commands.rows[row].id}delete" >delete</button>`)
+        tr.appendChild(tddelete);
+        tddelete.addEventListener('click' , function (elem){
+          console.log(`${elem.srcElement.dataset.indexNumber}`)
+          let rowtr = document.getElementById(`${elem.srcElement.dataset.indexNumber}tr`)
+          let conf = confirm('Are you sure you would like to delete this command?')
+          if (conf === true){
+            rowtr.parentNode.removeChild(rowtr);
+            const deleteobj = [`${elem.srcElement.dataset.indexNumber}`]
+            socket.emit('deleteCmd', deleteobj);
+          } else {
+            //console.log(`command not deleted`);
+          }
+        })
+        editing(tdedit);
+        console.log(tr);
+        rowCounter++
+        fragment.appendChild(tr);
+        //console.log(table_body)
+      }
+      table_body.appendChild(fragment)
+      $("#here_table").append(table_body);
+      $("#commandstb tr:last").after('<tr><td><input id="newcmd"></input></td><td> <input id="newresponse"></input></td><td><button id="newsave">Save</button><td></tr>');
+        $("#newsave").click(function(elem){
+          let newCmdObj = [ $("#newcmd").val() , $("#newresponse").val() , usr ]
+          console.log(newCmdObj)
+          socket.emit('newcmd', newCmdObj);
+          $("#here_table").html("")
+        })
+    })
+    //we will be creating the jquery page here and dealing with postgres on the backend. We will need to create the database for the commands in postgres.
+    //what we can do for the commands list is we can do a select * from commands then take the json and hand it off to us here and parse it to display on the page
+    //what will be the hard one will be deleting them.... we'll deal with that later... for now if we want to create a new command we can create a form that when
+    //submitted it will do an addition to the database entries that will be queried on the backend for bot commands.  (this is notes for me later)
+  </script>
+</body>
+
+</html>
