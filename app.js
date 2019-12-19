@@ -186,11 +186,11 @@ function onaddCmd(cmdInf){
       console.log(`command ${cmdInf} added`)
       let userar = [ cmdInf[2] ]
       console.log(userar)
-      pool.query('select command_name, response, id from commands where user_name=$1', userar, (err, res) => {
+      pool.query('select command_name, response, id, user_name from commands where user_name=$1', userar, (err, res) => {
         if (err) {
           console.log(err.stack)
         } else {
-          //console.log(res)
+          console.log(res)
           io.emit('sendcommands', res)
         }
       })
@@ -353,6 +353,6 @@ io.sockets.on('connection', (socket) => {
 // this is going to be the handling of the admin page events
 
 
-const server = http.listen(8083, () => {
-  console.log('listening on *:8083');
+const server = http.listen(80, () => {
+  console.log('listening on *:80');
 });

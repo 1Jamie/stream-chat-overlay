@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Admin streamchatoverlay</title>
+  <title>StreamChatOverlay Login</title>
   <meta name="description" content="Streamchatoverlay Bot page">
   <meta name="author" content="SitePoint">
   <script src="../../socket.io/socket.io.js"></script>
@@ -24,10 +24,9 @@
   <table id="here_table" class="table">
   </table>
   <script>
-
     $('#login_Register').click(function () {
-      const info = [$('#userName').val(), $('#password').val()]    
-      var socket = io.connect('192.168.30.115:8083');
+      const info = [$('#userName').val(), $('#password').val()]
+      var socket = io.connect('192.168.30.115:80');
       socket.emit('adminCon', info);
       //console.log(info)
       socket.on('authEmit', function (connectInf) {
@@ -36,6 +35,7 @@
           $('#userName').remove();
           $('#password').remove();
           $('#login_Register').remove();
+          document.title = "StreamChatOverlay Commands"
           let cmdobj;
           let editing = function (tdedit) {
             tdedit.addEventListener('click', function (elem) {
@@ -54,71 +54,74 @@
             })
           }
           socket.on('sendcommands', function (commands) {
-            if (commands.rows[0].user_name === info[0]){
-            var table_body = document.createElement("table")
-            var fragment = document.createDocumentFragment();
-            var number_of_rows = commands.rowCount;
-            table_body.setAttribute('id', 'commandstb')
-            var number_of_columns = 2;
-            //console.log(commands)
-            var rowCounter = 0
-            for (var row = 0; row < number_of_rows; row++) {
+            if (commands.rows[0].user_name === info[0]) {
+              var table_body = document.createElement("table")
+              var fragment = document.createDocumentFragment();
+              var number_of_rows = commands.rowCount;
+              table_body.setAttribute('id', 'commandstb')
+              var number_of_columns = 2;
               //console.log(commands)
-              var tr = document.createElement("tr");
-              tr.setAttribute('id', `${commands.rows[row].id}tr`)
-              var td1 = document.createElement("td");
-              td1.innerHTML = (`${commands.rows[row].command_name}`)
-              td1.setAttribute("id", `${commands.rows[row].id}td1`)
-              tr.appendChild(td1);
-              let td2 = document.createElement("td");
-              td2.innerHTML = (`<p id = "${commands.rows[row].id}p" >` + commands.rows[row].response +
-                "</p>" + `<input class="inputtd" id="${commands.rows[row].id}response"></input>`)
-              td2.setAttribute("id", `${commands.rows[row].id}td2`)
-              tr.appendChild(td2);
-              tdedit = document.createElement("td");
-              tdedit.innerHTML = (`<button id = ${commands.rows[row].id} >edit</button>`)
-              tr.appendChild(tdedit);
-              tddelete = document.createElement("td");
-              tddelete.innerHTML = (
-                `<button data-index-number = "${commands.rows[row].id}" id = "${commands.rows[row].id}delete" >delete</button>`
+              var rowCounter = 0
+              for (var row = 0; row < number_of_rows; row++) {
+                //console.log(commands)
+                var tr = document.createElement("tr");
+                tr.setAttribute('id', `${commands.rows[row].id}tr`)
+                var td1 = document.createElement("td");
+                td1.innerHTML = (`${commands.rows[row].command_name}`)
+                td1.setAttribute("id", `${commands.rows[row].id}td1`)
+                tr.appendChild(td1);
+                let td2 = document.createElement("td");
+                td2.innerHTML = (`<p id = "${commands.rows[row].id}p" >` + commands.rows[row].response +
+                  "</p>" + `<input class="inputtd" id="${commands.rows[row].id}response"></input>`)
+                td2.setAttribute("id", `${commands.rows[row].id}td2`)
+                tr.appendChild(td2);
+                tdedit = document.createElement("td");
+                tdedit.innerHTML = (`<button id = ${commands.rows[row].id} >edit</button>`)
+                tr.appendChild(tdedit);
+                tddelete = document.createElement("td");
+                tddelete.innerHTML = (
+                  `<button data-index-number = "${commands.rows[row].id}" id = "${commands.rows[row].id}delete" >delete</button>`
                 )
-              tr.appendChild(tddelete);
-              tddelete.addEventListener('click', function (elem) {
-                //console.log(`${elem.srcElement.dataset.indexNumber}`)
-                let rowtr = document.getElementById(`${elem.srcElement.dataset.indexNumber}tr`)
-                let conf = confirm('Are you sure you would like to delete this command?')
-                if (conf === true) {
-                  rowtr.parentNode.removeChild(rowtr);
-                  const deleteobj = [`${elem.srcElement.dataset.indexNumber}`]
-                  socket.emit('deleteCmd', deleteobj);
-                } else {
-                  //console.log(`command not deleted`);
-                }
-              })
-              editing(tdedit);
-              //console.log(tr);
-              rowCounter++
-              fragment.appendChild(tr);
-              //console.log(table_body)
-            }
-            table_body.appendChild(fragment)
-            $("#here_table").append(table_body);
-            $("#commandstb tr:last").after(
-              '<tr><td><input id="newcmd"></input></td><td> <input id="newresponse"></input></td><td><button id="newsave">Save</button><td></tr>'
+                tr.appendChild(tddelete);
+                tddelete.addEventListener('click', function (elem) {
+                  //console.log(`${elem.srcElement.dataset.indexNumber}`)
+                  let rowtr = document.getElementById(`${elem.srcElement.dataset.indexNumber}tr`)
+                  let conf = confirm('Are you sure you would like to delete this command?')
+                  if (conf === true) {
+                    rowtr.parentNode.removeChild(rowtr);
+                    const deleteobj = [`${elem.srcElement.dataset.indexNumber}`]
+                    socket.emit('deleteCmd', deleteobj);
+                  } else {
+                    //console.log(`command not deleted`);
+                  }
+                })
+                editing(tdedit);
+                //console.log(tr);
+                rowCounter++
+                fragment.appendChild(tr);
+                //console.log(table_body)
+              }
+              table_body.appendChild(fragment)
+              $("#here_table").append(table_body);
+              $("#commandstb tr:last").after(
+                '<tr><td><input id="newcmd"></input></td><td> <input id="newresponse"></input></td><td><button id="newsave">Save</button><td></tr>'
               );
-            $("#newsave").click(function (elem) {
-              let newCmdObj = [$("#newcmd").val(), $("#newresponse").val(), usr]
-              //console.log(newCmdObj)
-              socket.emit('newcmd', newCmdObj);
-              $("#here_table").html("")
-            })
-          } else{
-            //console.log('not yo shit!')
-          }})
+              $("#newsave").click(function (elem) {
+                let newCmdObj = [$("#newcmd").val(), $("#newresponse").val(), info[0]]
+                //console.log(newCmdObj)
+                socket.emit('newcmd', newCmdObj);
+                $("#here_table").html("")
+              })
+            } else {
+              console.log('not yo shit!')
+              console.log(commands)
+            }
+          })
         } else {
           socket = null;
           console.log('JOKES ON YOU! NOT YO SHIT!')
-          $('<p style="color: red;" >Incorrect Username or Password</p>').insertBefore('#userName').delay(10000).fadeOut(100);
+          $('<p style="color: red;" >Incorrect Username or Password</p>').insertBefore('#userName').delay(10000)
+            .fadeOut(100);
         }
       })
     })
