@@ -2,3 +2,4 @@ node_modules
 info.js
 npm-debug.log
 .htdocs/dns
+package-lock.json
