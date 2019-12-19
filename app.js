@@ -142,7 +142,7 @@ function onAdminCon(conninfo) {
         io.emit('authEmit', 'permit')
         //const commands_query = "select * from commands where user_name='" + conninfo[0] +"'";
         //console.log(commands_query)
-        pool.query('select command_name, response, id from commands where user_name=$1', [conninfo[0]], (err, res) => {
+        pool.query('select command_name, response, id, user_name from commands where user_name=$1', [conninfo[0]], (err, res) => {
           if (err) {
             console.log(err.stack)
           } else {
