@@ -31,7 +31,8 @@
       //console.log(info)
       socket.on('authEmit', function (connectInf) {
         //console.log(connectInf)
-        if (connectInf === 'permit') {
+        if (connectInf[0] === 'permit') {
+          const chan = connectInf[1]
           $('#userName').remove();
           $('#password').remove();
           $('#login_Register').remove();
@@ -107,7 +108,7 @@
                 '<tr><td><input id="newcmd"></input></td><td> <input id="newresponse"></input></td><td><button id="newsave">Save</button><td></tr>'
               );
               $("#newsave").click(function (elem) {
-                let newCmdObj = [$("#newcmd").val(), $("#newresponse").val(), info[0]]
+                let newCmdObj = [$("#newcmd").val(), $("#newresponse").val(), chan]
                 //console.log(newCmdObj)
                 socket.emit('newcmd', newCmdObj);
                 $("#here_table").html("")
