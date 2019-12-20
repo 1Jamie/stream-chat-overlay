@@ -139,7 +139,7 @@ function onAdminCon(conninfo) {
     } else {
       //console.log(res);
       if (res.rowCount != 0) {
-        io.emit('authEmit', ['permit', res.rows[0].channel ])
+        io.emit('authEmit', ['permit', res.rows[0].channel])
         console.log(res);
         //const commands_query = "select * from commands where user_name='" + conninfo[0] +"'";
         //console.log(commands_query)
@@ -151,13 +151,21 @@ function onAdminCon(conninfo) {
             io.emit('sendcommands', res)
           }
         })
+        pool.query('select word, value, uid, channel from word_filter where channel=$1', [res.rows[0].channel], (err, res) => {
+          if (err) {
+            console.log(err.stack)
+          } else {
+            io.emit('filters', res)
+          }
+        })
       } else {
         io.emit('authEmit', 'deny')
       }
     }
   })
 }
-function onCmdChange(cmdInf){
+
+function onCmdChange(cmdInf) {
   const cmdtxt = 'update commands set response=$2 where id=$1'
   pool.query(cmdtxt, cmdInf, (err, res) => {
     if (err) {
@@ -168,24 +176,58 @@ function onCmdChange(cmdInf){
   })
 }
 
-function ondeleteCmd(cmdInf){
+function ondeleteCmd(cmdInf) {
   const text = 'delete from commands where id=$1';
   pool.query(text, cmdInf, (err, res) => {
     if (err) {
-    console.log(err.stack)
-  } else {
-    console.log(`command ${cmdInf} deleted`)
-  }
+      console.log(err.stack)
+    } else {
+      console.log(`command ${cmdInf} deleted`)
+    }
   })
 }
-function onaddCmd(cmdInf){
+
+function ondeleteWrd(cmdInf) {
+  console.log(cmdInf);
+  const text = 'delete from word_filter where uid=$1'
+  pool.query(text, cmdInf, (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(`word with id ${cmdInf} deleted`)
+    }
+  });
+}
+
+function onnewwrd(cmdInf) {
+  console.log(cmdInf);
+  pool.query('insert into word_filter (channel, word, value) values ($3, $1, $2)', cmdInf, (err, res) => {
+    if (err) {
+      console.log(err.stack);
+    } else {
+      console.log(`command ${cmdInf} added`)
+      let userar = [cmdInf[2]]
+      console.log(userar)
+      pool.query('select word, value, uid, channel from word_filter where channel=$1', userar, (err, res) => {
+        if (err) {
+          console.log(err.stack)
+        } else {
+          console.log(res)
+          io.emit('filters', res)
+        }
+      })
+    }
+  })
+}
+
+function onaddCmd(cmdInf) {
   const text = "insert into commands (user_name, command_name, response) values ($3 , $1 , $2)"
   pool.query(text, cmdInf, (err, res) => {
     if (err) {
       console.log(err)
     } else {
       console.log(`command ${cmdInf} added`)
-      let userar = [ cmdInf[2] ]
+      let userar = [cmdInf[2]]
       console.log(userar)
       pool.query('select command_name, response, id, user_name from commands where user_name=$1', userar, (err, res) => {
         if (err) {
@@ -206,6 +248,7 @@ function onConnectedHandler(addr, port) {
 //This is going to define how the messages are handled when the event happens
 function onMessageHandler(channel, tags, message, self) {
   let message1;
+  let postMsg = true
 
   const {
     'user-name': username,
@@ -215,17 +258,46 @@ function onMessageHandler(channel, tags, message, self) {
     emotes: emote,
   } = tags;
 
-  const commandName = [ message.trim() , channel.substr(1) ]
-  
+  const commandName = [message.trim(), channel.substr(1)]
+
   pool.query('select response from commands where command_name=$1 and user_name=$2', commandName, (err, res) => {
-    console.log( commandName )
-    console.log(res)
+    //console.log(commandName)
+    //console.log(res)
     if (res.rowCount != 0) {
       client.say(channel, res.rows[0].response)
     }
   })
 
-  
+  console.log(commandName[1]);
+
+  pool.query('select word, value from word_filter where channel=$1', [commandName[1]], (err, res) =>{
+    if (err) {
+      console.log(err)
+    } else {
+      let row = 0 
+      let msgVal = 0
+      console.log(res.rowCount)
+      for ( i=0;i<parseInt(res.rowCount);i++){
+        console.log(res.rows[row].word);
+        if ( message.indexOf(res.rows[row].word) !== -1 ) {
+          //console.log(res.rows[row].value)
+          msgVal = msgVal + parseInt(res.rows[row].value);
+          //console.log(msgVal)
+        } else {
+          //
+        }
+        console.log(msgVal)
+        console.log(row)
+        row++
+      }
+      if (msgVal >= 6){
+        console.log('run for the hills! bad message!')
+        postMsg = false;
+
+      }
+      //console.log(res)
+    }
+  })
   /*if (commandName === '!project') {
     client.say(channel, 'the project page is https://gitlab.streamchatoverlay.xyz/jamie/streamchatoverlay');
     console.log('project command seen, message should be sent');
@@ -325,7 +397,11 @@ function onMessageHandler(channel, tags, message, self) {
 
         // console.log(`${name} -- ${props}`);
         const profileElment = `<img align="left" style="padding-right: 3px;" class="profImg" src="${profile_image_url}" alt="null" id="itemImg">`;
+        if (postMsg === true) {
         io.emit('twitch', `${profileElment}<p> ${channelLogo} ${displayName}:</p>  <p class="msg">${message1}</p></br>`);
+        } else {
+          console.log('message emitted for filter reasons')
+        }
       }
     });
 }
@@ -346,7 +422,9 @@ io.sockets.on('connection', (socket) => {
   socket.on('adminCon', onAdminCon);
   socket.on('command_change', onCmdChange);
   socket.on('newcmd', onaddCmd);
-  socket.on('deleteCmd', ondeleteCmd)
+  socket.on('deleteCmd', ondeleteCmd);
+  socket.on('deleteWrd', ondeleteWrd);
+  socket.on('newwrd', onnewwrd)
   socket.on('chat_message', (message) => {
     io.emit('chat_message', `<strong>${socket.username}</strong>: ${message}`);
   });

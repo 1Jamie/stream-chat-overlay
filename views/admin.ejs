@@ -22,6 +22,7 @@
   </div>
   </div>
   <table id="here_table" class="table">
+  <table id="here_table_word" class="table"></table>
   </table>
   <script>
     $('#login_Register').click(function () {
@@ -55,7 +56,7 @@
             })
           }
           socket.on('sendcommands', function (commands) {
-            if (commands.rows[0].user_name === info[0]) {
+            if (commands.rows[0].user_name === chan) {
               var table_body = document.createElement("table")
               var fragment = document.createDocumentFragment();
               var number_of_rows = commands.rowCount;
@@ -114,14 +115,98 @@
                 $("#here_table").html("")
               })
             } else {
-              console.log('not yo shit!')
-              console.log(commands)
+              //console.log('not yo shit!')
+              //console.log(commands)
+            }
+          })
+          socket.on('filters', function (words) {
+            if (words.rows[0].channel === chan) {
+              var table_body = document.createElement("table")
+              var fragment = document.createDocumentFragment();
+              var number_of_rows = words.rowCount;
+              table_body.setAttribute('id', 'wordstb')
+              //console.log(words)
+              var number_of_columns = 2;
+              //console.log(commands)
+              var rowCounter = 0
+              for (var row = 0; row < number_of_rows; row++) {
+                //console.log(commands)
+                var tr = document.createElement("tr");
+                tr.setAttribute('id', `${words.rows[row].uid}wtr`)
+                var td1 = document.createElement("td");
+                td1.innerHTML = (`${words.rows[row].word}`)
+                td1.setAttribute("id", `${words.rows[row].uid}wtd1`)
+                tr.appendChild(td1);
+                let td2 = document.createElement("td");
+                td2.innerHTML = (`<p id = "${words.rows[row].uid}wwp" >` + words.rows[row].value +
+                  "</p>" + `<input class="inputtd" id="${words.rows[row].uid}wq"></input>`)
+                td2.setAttribute("id", `${words.rows[row].uid}wtd2`)
+                tr.appendChild(td2);
+                tdedit = document.createElement("td");
+                tdedit.innerHTML = (`<button id = "${words.rows[row].uid}w" >edit</button>`)
+                tr.appendChild(tdedit);
+                tddelete = document.createElement("td");
+                tddelete.innerHTML = (
+                  `<button data-index-number = "${words.rows[row].uid}" id = "${words.rows[row].uid}wdelete" >delete</button>`
+                )
+                tr.appendChild(tddelete);
+                tddelete.addEventListener('click', function (elem) {
+                  console.log(`${elem.srcElement.dataset.indexNumber}`)
+                  let rowtr = document.getElementById(`${elem.srcElement.dataset.indexNumber}wtr`)
+                  let conf = confirm('Are you sure you would like to delete this command?')
+                  if (conf === true) {
+                    rowtr.parentNode.removeChild(rowtr);
+                    const deleteobj = [`${elem.srcElement.dataset.indexNumber}`]
+                    socket.emit('deleteWrd', deleteobj);
+                    console.log(deleteobj)
+                  } else {
+                    //console.log(`command not deleted`);
+                  }
+                })
+
+                tdedit.addEventListener('click', function (elem) {
+                  //console.log(elem.srcElement.id)
+                  //console.log(elem)
+                  let btn = document.getElementById(elem.srcElement.id)
+                  btn.innerHTML = ('Saved')
+
+                  let input = document.getElementById(`${elem.srcElement.id}q`)
+                  //console.log(input.value)
+                  //console.log(input)
+                  let cmdUpdate = [elem.srcElement.id, input.value]
+                  //console.log(cmdUpdate)
+                  socket.emit('word_change', cmdUpdate);
+                  document.getElementById(`${elem.srcElement.id}wp`).textContent = input.value;
+                  //console.log(input.value);
+                  //console.log(document.getElementById(`${elem.srcElement.id}p`));  
+                  input.value = "";
+                })
+
+                //console.log(tr);
+                rowCounter++
+                fragment.appendChild(tr);
+                //console.log(table_body)
+              }
+              table_body.appendChild(fragment)
+              $("#here_table_word").append(table_body);
+              $("#wordstb tr:last").after(
+                '<tr><td><input id="newwrd"></input></td><td> <input id="newvalue"></input></td><td><button id="newsavew">Save</button><td></tr>'
+              );
+              $("#newsavew").click(function (elem) {
+                let newWrdObj = [$("#newwrd").val(), $("#newvalue").val(), chan]
+                //console.log(newCmdObj)
+                socket.emit('newwrd', newWrdObj);
+                $("#here_table_word").html("")
+              })
+
+
             }
           })
         } else {
           socket = null;
           console.log('JOKES ON YOU! NOT YO SHIT!')
-          $('<p style="color: red;" >Incorrect Username or Password</p>').insertBefore('#userName').delay(10000)
+          $('<p style="color: red;" >Incorrect Username or Password</p>').insertBefore('#userName').delay(
+              10000)
             .fadeOut(100);
         }
       })
