@@ -15,16 +15,23 @@
 </head>
 
 <body>
-  <div class="n_log_in">
-    <input type="text" id="userName" placeholder="Username..." /><br>
-    <input type="password" id="password" placeholder="Password..." /><br>
-    <button id="login_Register">Login / Register</button>
+  <img style='width:35%;' src="css/streamchatoverlay.png">
+  <div class="n_log_in" id="loginBox">
+    <input class="logins" type="text" id="userName" placeholder="Username..." /><br>
+    <input class="logins" type="password" id="password" placeholder="Password..." /><br>
+    <button class="loginBtn" id="login_Register">Login / Register</button>
   </div>
   </div>
   <table id="here_table" class="table">
   <table id="here_table_word" class="table"></table>
   </table>
   <script>
+    $('#userName').focus();
+    $('#password').keyup(function(event) {
+    if (event.keyCode === 13) {
+        $("#login_Register").click();
+    }
+});
     $('#login_Register').click(function () {
       const info = [$('#userName').val(), $('#password').val()]
       var socket = io.connect('192.168.30.115:80');
@@ -37,6 +44,7 @@
           $('#userName').remove();
           $('#password').remove();
           $('#login_Register').remove();
+          $('#loginBox').remove();
           document.title = "StreamChatOverlay Commands"
           let cmdobj;
           let editing = function (tdedit) {
@@ -58,6 +66,7 @@
           socket.on('sendcommands', function (commands) {
             if (commands.rows[0].user_name === chan) {
               var table_body = document.createElement("table")
+              table_body.setAttribute('class', 'maintable')
               var fragment = document.createDocumentFragment();
               var number_of_rows = commands.rowCount;
               table_body.setAttribute('id', 'commandstb')
@@ -105,6 +114,7 @@
               }
               table_body.appendChild(fragment)
               $("#here_table").append(table_body);
+              $("#commandstb tr:first").before('<tr><td class="labels" title="This row is the name of the command">Command Names</td><td class="labels" title="This row is the response that the bot will give">Command response</td>')
               $("#commandstb tr:last").after(
                 '<tr><td><input id="newcmd"></input></td><td> <input id="newresponse"></input></td><td><button id="newsave">Save</button><td></tr>'
               );
@@ -151,14 +161,14 @@
                 )
                 tr.appendChild(tddelete);
                 tddelete.addEventListener('click', function (elem) {
-                  console.log(`${elem.srcElement.dataset.indexNumber}`)
+                  //console.log(`${elem.srcElement.dataset.indexNumber}`)
                   let rowtr = document.getElementById(`${elem.srcElement.dataset.indexNumber}wtr`)
                   let conf = confirm('Are you sure you would like to delete this command?')
                   if (conf === true) {
                     rowtr.parentNode.removeChild(rowtr);
                     const deleteobj = [`${elem.srcElement.dataset.indexNumber}`]
                     socket.emit('deleteWrd', deleteobj);
-                    console.log(deleteobj)
+                    //console.log(deleteobj)
                   } else {
                     //console.log(`command not deleted`);
                   }

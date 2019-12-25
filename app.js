@@ -140,7 +140,7 @@ function onAdminCon(conninfo) {
       //console.log(res);
       if (res.rowCount != 0) {
         io.emit('authEmit', ['permit', res.rows[0].channel])
-        console.log(res);
+        //console.log(res);
         //const commands_query = "select * from commands where user_name='" + conninfo[0] +"'";
         //console.log(commands_query)
         pool.query('select command_name, response, id, user_name from commands where user_name=$1', [res.rows[0].channel], (err, res) => {
@@ -207,12 +207,12 @@ function onnewwrd(cmdInf) {
     } else {
       console.log(`command ${cmdInf} added`)
       let userar = [cmdInf[2]]
-      console.log(userar)
+      //console.log(userar)
       pool.query('select word, value, uid, channel from word_filter where channel=$1', userar, (err, res) => {
         if (err) {
           console.log(err.stack)
         } else {
-          console.log(res)
+          //console.log(res)
           io.emit('filters', res)
         }
       })
@@ -228,12 +228,12 @@ function onaddCmd(cmdInf) {
     } else {
       console.log(`command ${cmdInf} added`)
       let userar = [cmdInf[2]]
-      console.log(userar)
+      //console.log(userar)
       pool.query('select command_name, response, id, user_name from commands where user_name=$1', userar, (err, res) => {
         if (err) {
           console.log(err.stack)
         } else {
-          console.log(res)
+          //console.log(res)
           io.emit('sendcommands', res)
         }
       })
@@ -298,10 +298,7 @@ function onMessageHandler(channel, tags, message, self) {
       //console.log(res)
     }
   })
-  /*if (commandName === '!project') {
-    client.say(channel, 'the project page is https://gitlab.streamchatoverlay.xyz/jamie/streamchatoverlay');
-    console.log('project command seen, message should be sent');
-  }*/
+  
   if (commandName === '!multimsg') {
     if ((displayName === 'Charja113') || (displayName === 'Samma_FTW')) {
       if (multi === 'off') {
