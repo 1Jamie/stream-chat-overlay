@@ -32,3 +32,14 @@ table{
 .loginBtn{
     margin-left: 5%;
 }
+.psswdDiv{
+    padding: 20px;
+    background-color: #333333;
+    color: lightgray;   
+    width: 200px;
+    margin-left:2%;
+    border-radius: 10px;
+}
+p{
+    color: lightgray;
+}

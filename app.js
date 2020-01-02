@@ -129,6 +129,21 @@ function onCheer(channel, userstate, message) {
   getCheerUrl(message, userstate);
 }
 
+function onCngPsswd(psswdInf, fn){
+  console.log(psswdInf);
+  let psswdPg = 'update users set password=$3 where username=$1 and password=$2 '
+  pool.query(psswdPg, psswdInf, (err, res) => {
+    if(err) {
+      fn(err)
+      console.log(err);
+    }
+    else{
+      fn(res)
+      console.log(res);
+    }
+  })
+}
+
 //We are gonna deal with the admin pannel here, it will both start up authentication and then were gonna server up the bot commands
 function onAdminCon(conninfo) {
   console.log(conninfo);
@@ -422,6 +437,7 @@ io.sockets.on('connection', (socket) => {
   socket.on('deleteCmd', ondeleteCmd);
   socket.on('deleteWrd', ondeleteWrd);
   socket.on('newwrd', onnewwrd)
+  socket.on('psswdCng', onCngPsswd)
   socket.on('chat_message', (message) => {
     io.emit('chat_message', `<strong>${socket.username}</strong>: ${message}`);
   });

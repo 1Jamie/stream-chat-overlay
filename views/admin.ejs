@@ -199,16 +199,41 @@
               }
               table_body.appendChild(fragment)
               $("#here_table_word").append(table_body);
+              $("#wordstb tr:first").before('<tr><td class="labels" title="This row is the name of the word to be filtered out">Filter Words</td><td class="labels" title="This is the value of the word in the filter, if total value of the message is about 6 it will not show on the overlay">Word Value</td>')
               $("#wordstb tr:last").after(
                 '<tr><td><input id="newwrd"></input></td><td> <input id="newvalue"></input></td><td><button id="newsavew">Save</button><td></tr>'
               );
+              $('#here_table_word').after('<button id="cngPsswd" class="btn1">Change Password</button>')
+              $('#cngPsswd').click( function(){
+                $('#cngPsswd').after('<div id="newPsswdDiv" class="psswdDiv"></div>')
+                $('#newPsswdDiv').append('<input id="currentPsswd" type="password" class="inputpass" placeholder="Current Password"></input>')
+                $('#newPsswdDiv').append('</br><input id="newPsswd" type="password" class="inputpass" placeholder="New Password"></input>')
+                $('#newPsswdDiv').append('</br><input id="confPsswd" type="password" class="inputpass" placeholder="Confirm Password"></input>')
+                $('#newPsswdDiv').append('</br><button id="savePass" class="btn1">Save Password</button>')
+                $('#cngPsswd').hide()
+                $('#savePass').click(function(){
+                  if( ($('#currentPsswd').val() === info[1]) && ($('#newPsswd').val() === $('#confPsswd').val()) ) {
+                    let newpassobj = [info[0], $('#currentPsswd').val(), $('#newPsswd').val()]
+                    socket.emit('psswdCng', newpassobj, function(data){
+                      if (data.command === 'UPDATE'){
+                        info[1] = newpassobj[2]
+                        $('<p id="cngConf" class="confP">PasswordChanged</p>').insertBefore('#newPsswdDiv').delay(10000).fadeOut(100)
+                        $('#newPsswdDiv').hide();
+                      } else {
+                        $('<p style="color: red;">Password Change Failed, Please Try Again!</p>').insertBefore('#newPsswdDiv').delay(10000).fadeOut(100)
+                      }
+                    });
+                  }
+                  else {
+                    $('<p style="color: red;">Password Change Failed, Please Check Input and Try Again!</p>').insertBefore('#newPsswdDiv').delay(10000).fadeOut(100)
+                  }
+                })
+              })
               $("#newsavew").click(function (elem) {
                 let newWrdObj = [$("#newwrd").val(), $("#newvalue").val(), chan]
-                //console.log(newCmdObj)
                 socket.emit('newwrd', newWrdObj);
                 $("#here_table_word").html("")
               })
-
 
             }
           })
