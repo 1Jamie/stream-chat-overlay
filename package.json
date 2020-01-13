@@ -1,11 +1,11 @@
 {
   "name": "chatoverlay",
-  "description": "not yet working stream chat overlay for twitch",
+  "description": "stream chat overlay and bot for twitch",
   "version": "0.0.1",
   "private": false,
   "author": "Jamie Charlton",
   "homepage": "https://gitlab.streamchatoverlay.xyz/Jamie/streamchatoverlay",
-  "contributors": [
+  "contributors": [ 
     "Jamie Charlton"
   ],
   "bugs": {

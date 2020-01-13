@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Admin streamchatoverlay</title>
+  <title>StreamChatOverlay Login</title>
   <meta name="description" content="Streamchatoverlay Bot page">
   <meta name="author" content="SitePoint">
   <script src="../../socket.io/socket.io.js"></script>
@@ -15,27 +15,37 @@
 </head>
 
 <body>
-  <div class="n_log_in">
-    <input type="text" id="userName" placeholder="Username..." /><br>
-    <input type="password" id="password" placeholder="Password..." /><br>
-    <button id="login_Register">Login / Register</button>
+  <img style='width:35%;' src="css/streamchatoverlay.png">
+  <div class="n_log_in" id="loginBox">
+    <input class="logins" type="text" id="userName" placeholder="Username..." /><br>
+    <input class="logins" type="password" id="password" placeholder="Password..." /><br>
+    <button class="loginBtn" id="login_Register">Login / Register</button>
   </div>
   </div>
   <table id="here_table" class="table">
+  <table id="here_table_word" class="table"></table>
   </table>
   <script>
-
+    $('#userName').focus();
+    $('#password').keyup(function(event) {
+    if (event.keyCode === 13) {
+        $("#login_Register").click();
+    }
+});
     $('#login_Register').click(function () {
-      const info = [$('#userName').val(), $('#password').val()]    
-      var socket = io.connect('192.168.30.115:8083');
+      const info = [$('#userName').val(), $('#password').val()]
+      var socket = io.connect('192.168.30.115:80');
       socket.emit('adminCon', info);
       //console.log(info)
       socket.on('authEmit', function (connectInf) {
         //console.log(connectInf)
-        if (connectInf === 'permit') {
+        if (connectInf[0] === 'permit') {
+          const chan = connectInf[1]
           $('#userName').remove();
           $('#password').remove();
           $('#login_Register').remove();
+          $('#loginBox').remove();
+          document.title = "StreamChatOverlay Commands"
           let cmdobj;
           let editing = function (tdedit) {
             tdedit.addEventListener('click', function (elem) {
@@ -54,71 +64,185 @@
             })
           }
           socket.on('sendcommands', function (commands) {
-            if (commands.rows[0].user_name === info[0]){
-            var table_body = document.createElement("table")
-            var fragment = document.createDocumentFragment();
-            var number_of_rows = commands.rowCount;
-            table_body.setAttribute('id', 'commandstb')
-            var number_of_columns = 2;
-            //console.log(commands)
-            var rowCounter = 0
-            for (var row = 0; row < number_of_rows; row++) {
+            if (commands.rows[0].user_name === chan) {
+              var table_body = document.createElement("table")
+              table_body.setAttribute('class', 'maintable')
+              var fragment = document.createDocumentFragment();
+              var number_of_rows = commands.rowCount;
+              table_body.setAttribute('id', 'commandstb')
+              var number_of_columns = 2;
               //console.log(commands)
-              var tr = document.createElement("tr");
-              tr.setAttribute('id', `${commands.rows[row].id}tr`)
-              var td1 = document.createElement("td");
-              td1.innerHTML = (`${commands.rows[row].command_name}`)
-              td1.setAttribute("id", `${commands.rows[row].id}td1`)
-              tr.appendChild(td1);
-              let td2 = document.createElement("td");
-              td2.innerHTML = (`<p id = "${commands.rows[row].id}p" >` + commands.rows[row].response +
-                "</p>" + `<input class="inputtd" id="${commands.rows[row].id}response"></input>`)
-              td2.setAttribute("id", `${commands.rows[row].id}td2`)
-              tr.appendChild(td2);
-              tdedit = document.createElement("td");
-              tdedit.innerHTML = (`<button id = ${commands.rows[row].id} >edit</button>`)
-              tr.appendChild(tdedit);
-              tddelete = document.createElement("td");
-              tddelete.innerHTML = (
-                `<button data-index-number = "${commands.rows[row].id}" id = "${commands.rows[row].id}delete" >delete</button>`
+              var rowCounter = 0
+              for (var row = 0; row < number_of_rows; row++) {
+                //console.log(commands)
+                var tr = document.createElement("tr");
+                tr.setAttribute('id', `${commands.rows[row].id}tr`)
+                var td1 = document.createElement("td");
+                td1.innerHTML = (`${commands.rows[row].command_name}`)
+                td1.setAttribute("id", `${commands.rows[row].id}td1`)
+                tr.appendChild(td1);
+                let td2 = document.createElement("td");
+                td2.innerHTML = (`<p id = "${commands.rows[row].id}p" >` + commands.rows[row].response +
+                  "</p>" + `<input class="inputtd" id="${commands.rows[row].id}response"></input>`)
+                td2.setAttribute("id", `${commands.rows[row].id}td2`)
+                tr.appendChild(td2);
+                tdedit = document.createElement("td");
+                tdedit.innerHTML = (`<button id = ${commands.rows[row].id} >edit</button>`)
+                tr.appendChild(tdedit);
+                tddelete = document.createElement("td");
+                tddelete.innerHTML = (
+                  `<button data-index-number = "${commands.rows[row].id}" id = "${commands.rows[row].id}delete" >delete</button>`
                 )
-              tr.appendChild(tddelete);
-              tddelete.addEventListener('click', function (elem) {
-                //console.log(`${elem.srcElement.dataset.indexNumber}`)
-                let rowtr = document.getElementById(`${elem.srcElement.dataset.indexNumber}tr`)
-                let conf = confirm('Are you sure you would like to delete this command?')
-                if (conf === true) {
-                  rowtr.parentNode.removeChild(rowtr);
-                  const deleteobj = [`${elem.srcElement.dataset.indexNumber}`]
-                  socket.emit('deleteCmd', deleteobj);
-                } else {
-                  //console.log(`command not deleted`);
-                }
-              })
-              editing(tdedit);
-              //console.log(tr);
-              rowCounter++
-              fragment.appendChild(tr);
-              //console.log(table_body)
-            }
-            table_body.appendChild(fragment)
-            $("#here_table").append(table_body);
-            $("#commandstb tr:last").after(
-              '<tr><td><input id="newcmd"></input></td><td> <input id="newresponse"></input></td><td><button id="newsave">Save</button><td></tr>'
+                tr.appendChild(tddelete);
+                tddelete.addEventListener('click', function (elem) {
+                  //console.log(`${elem.srcElement.dataset.indexNumber}`)
+                  let rowtr = document.getElementById(`${elem.srcElement.dataset.indexNumber}tr`)
+                  let conf = confirm('Are you sure you would like to delete this command?')
+                  if (conf === true) {
+                    rowtr.parentNode.removeChild(rowtr);
+                    const deleteobj = [`${elem.srcElement.dataset.indexNumber}`]
+                    socket.emit('deleteCmd', deleteobj);
+                  } else {
+                    //console.log(`command not deleted`);
+                  }
+                })
+                editing(tdedit);
+                //console.log(tr);
+                rowCounter++
+                fragment.appendChild(tr);
+                //console.log(table_body)
+              }
+              table_body.appendChild(fragment)
+              $("#here_table").append(table_body);
+              $("#commandstb tr:first").before('<tr><td class="labels" title="This row is the name of the command">Command Names</td><td class="labels" title="This row is the response that the bot will give">Command response</td>')
+              $("#commandstb tr:last").after(
+                '<tr><td><input id="newcmd"></input></td><td> <input id="newresponse"></input></td><td><button id="newsave">Save</button><td></tr>'
               );
-            $("#newsave").click(function (elem) {
-              let newCmdObj = [$("#newcmd").val(), $("#newresponse").val(), usr]
-              //console.log(newCmdObj)
-              socket.emit('newcmd', newCmdObj);
-              $("#here_table").html("")
-            })
-          } else{
-            //console.log('not yo shit!')
-          }})
+              $("#newsave").click(function (elem) {
+                let newCmdObj = [$("#newcmd").val(), $("#newresponse").val(), chan]
+                //console.log(newCmdObj)
+                socket.emit('newcmd', newCmdObj);
+                $("#here_table").html("")
+              })
+            } else {
+              //console.log('not yo shit!')
+              //console.log(commands)
+            }
+          })
+          socket.on('filters', function (words) {
+            if (words.rows[0].channel === chan) {
+              var table_body = document.createElement("table")
+              var fragment = document.createDocumentFragment();
+              var number_of_rows = words.rowCount;
+              table_body.setAttribute('id', 'wordstb')
+              //console.log(words)
+              var number_of_columns = 2;
+              //console.log(commands)
+              var rowCounter = 0
+              for (var row = 0; row < number_of_rows; row++) {
+                //console.log(commands)
+                var tr = document.createElement("tr");
+                tr.setAttribute('id', `${words.rows[row].uid}wtr`)
+                var td1 = document.createElement("td");
+                td1.innerHTML = (`${words.rows[row].word}`)
+                td1.setAttribute("id", `${words.rows[row].uid}wtd1`)
+                tr.appendChild(td1);
+                let td2 = document.createElement("td");
+                td2.innerHTML = (`<p id = "${words.rows[row].uid}wwp" >` + words.rows[row].value +
+                  "</p>" + `<input class="inputtd" id="${words.rows[row].uid}wq"></input>`)
+                td2.setAttribute("id", `${words.rows[row].uid}wtd2`)
+                tr.appendChild(td2);
+                tdedit = document.createElement("td");
+                tdedit.innerHTML = (`<button id = "${words.rows[row].uid}w" >edit</button>`)
+                tr.appendChild(tdedit);
+                tddelete = document.createElement("td");
+                tddelete.innerHTML = (
+                  `<button data-index-number = "${words.rows[row].uid}" id = "${words.rows[row].uid}wdelete" >delete</button>`
+                )
+                tr.appendChild(tddelete);
+                tddelete.addEventListener('click', function (elem) {
+                  //console.log(`${elem.srcElement.dataset.indexNumber}`)
+                  let rowtr = document.getElementById(`${elem.srcElement.dataset.indexNumber}wtr`)
+                  let conf = confirm('Are you sure you would like to delete this command?')
+                  if (conf === true) {
+                    rowtr.parentNode.removeChild(rowtr);
+                    const deleteobj = [`${elem.srcElement.dataset.indexNumber}`]
+                    socket.emit('deleteWrd', deleteobj);
+                    //console.log(deleteobj)
+                  } else {
+                    //console.log(`command not deleted`);
+                  }
+                })
+
+                tdedit.addEventListener('click', function (elem) {
+                  //console.log(elem.srcElement.id)
+                  //console.log(elem)
+                  let btn = document.getElementById(elem.srcElement.id)
+                  btn.innerHTML = ('Saved')
+
+                  let input = document.getElementById(`${elem.srcElement.id}q`)
+                  //console.log(input.value)
+                  //console.log(input)
+                  let cmdUpdate = [elem.srcElement.id, input.value]
+                  //console.log(cmdUpdate)
+                  socket.emit('word_change', cmdUpdate);
+                  document.getElementById(`${elem.srcElement.id}wp`).textContent = input.value;
+                  //console.log(input.value);
+                  //console.log(document.getElementById(`${elem.srcElement.id}p`));  
+                  input.value = "";
+                })
+
+                //console.log(tr);
+                rowCounter++
+                fragment.appendChild(tr);
+                //console.log(table_body)
+              }
+              table_body.appendChild(fragment)
+              $("#here_table_word").append(table_body);
+              $("#wordstb tr:first").before('<tr><td class="labels" title="This row is the name of the word to be filtered out">Filter Words</td><td class="labels" title="This is the value of the word in the filter, if total value of the message is about 6 it will not show on the overlay">Word Value</td>')
+              $("#wordstb tr:last").after(
+                '<tr><td><input id="newwrd"></input></td><td> <input id="newvalue"></input></td><td><button id="newsavew">Save</button><td></tr>'
+              );
+              $('#here_table_word').after('<button id="cngPsswd" class="btn1">Change Password</button>')
+              $('#cngPsswd').click( function(){
+                $('#cngPsswd').after('<div id="newPsswdDiv" class="psswdDiv"></div>')
+                $('#newPsswdDiv').append('<input id="currentPsswd" type="password" class="inputpass" placeholder="Current Password"></input>')
+                $('#newPsswdDiv').append('</br><input id="newPsswd" type="password" class="inputpass" placeholder="New Password"></input>')
+                $('#newPsswdDiv').append('</br><input id="confPsswd" type="password" class="inputpass" placeholder="Confirm Password"></input>')
+                $('#newPsswdDiv').append('</br><button id="savePass" class="btn1">Save Password</button>')
+                $('#cngPsswd').hide()
+                $('#savePass').click(function(){
+                  if( ($('#currentPsswd').val() === info[1]) && ($('#newPsswd').val() === $('#confPsswd').val()) ) {
+                    let newpassobj = [info[0], $('#currentPsswd').val(), $('#newPsswd').val()]
+                    socket.emit('psswdCng', newpassobj, function(data){
+                      if (data.command === 'UPDATE'){
+                        info[1] = newpassobj[2]
+                        $('<p id="cngConf" class="confP">PasswordChanged</p>').insertBefore('#newPsswdDiv').delay(10000).fadeOut(100)
+                        $('#newPsswdDiv').hide();
+                      } else {
+                        $('<p style="color: red;">Password Change Failed, Please Try Again!</p>').insertBefore('#newPsswdDiv').delay(10000).fadeOut(100)
+                      }
+                    });
+                  }
+                  else {
+                    $('<p style="color: red;">Password Change Failed, Please Check Input and Try Again!</p>').insertBefore('#newPsswdDiv').delay(10000).fadeOut(100)
+                  }
+                })
+              })
+              $("#newsavew").click(function (elem) {
+                let newWrdObj = [$("#newwrd").val(), $("#newvalue").val(), chan]
+                socket.emit('newwrd', newWrdObj);
+                $("#here_table_word").html("")
+              })
+
+            }
+          })
         } else {
           socket = null;
           console.log('JOKES ON YOU! NOT YO SHIT!')
-          $('<p style="color: red;" >Incorrect Username or Password</p>').insertBefore('#userName').delay(10000).fadeOut(100);
+          $('<p style="color: red;" >Incorrect Username or Password</p>').insertBefore('#userName').delay(
+              10000)
+            .fadeOut(100);
         }
       })
     })

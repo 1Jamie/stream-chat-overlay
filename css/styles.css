@@ -1,2 +1,45 @@
-table, th, td { border: 1px solid black;}
-.inputtd { float: right;}
+th, td { border: 1px solid black;
+border-radius: 5px;
+background-color:  #3e3d3d ;
+}
+.inputtd { float: right;
+width: 40%}
+.maintable {
+    width: 90%;
+}
+body {
+    width: 100%;
+    background-color:  black;
+}
+table{
+    width: 90%;
+    padding: 10px;
+    color: lightgray;
+}
+.labels {
+    font-size: large;
+}
+.logins{
+     width: 300px;
+     margin-left: 5%;
+}
+.n_log_in{
+    background-color: #3e3d3d;
+    width: 350px;
+    border-radius: 10px;
+    padding: 10px
+}
+.loginBtn{
+    margin-left: 5%;
+}
+.psswdDiv{
+    padding: 20px;
+    background-color: #333333;
+    color: lightgray;   
+    width: 200px;
+    margin-left:2%;
+    border-radius: 10px;
+}
+p{
+    color: lightgray;
+}
