@@ -28,10 +28,9 @@ const headers = {
 
 //setup our postgresql information we are going to need 
 const pool = new Pool({
-  user: 'root',
-  host: '192.168.30.102',
+  user: 'postgres',
+  host: 'localhost',
   database: 'emotes',
-  password: 'password',
   port: 5432,
 });
 
@@ -445,6 +444,6 @@ io.sockets.on('connection', (socket) => {
 // this is going to be the handling of the admin page events
 
 
-const server = http.listen(80, () => {
-  console.log('listening on *:80');
+const server = http.listen(8085, () => {
+  console.log('listening on *:8085');
 });

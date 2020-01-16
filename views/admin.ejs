@@ -34,7 +34,7 @@
 });
     $('#login_Register').click(function () {
       const info = [$('#userName').val(), $('#password').val()]
-      var socket = io.connect('192.168.30.115:80');
+      var socket = io.connect('localhost:8085');
       socket.emit('adminCon', info);
       //console.log(info)
       socket.on('authEmit', function (connectInf) {
